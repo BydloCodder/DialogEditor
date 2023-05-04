@@ -9,6 +9,7 @@
 #include <QDebug>
 #include <QListWidgetItem>
 #include <QVector>
+#include <QScrollBar>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -53,6 +54,18 @@ MainWindow::MainWindow(QWidget *parent)
                 f.flush();
                 f.close();
             }
+        }
+    });
+
+    auto model = ui->timeline_events->model();
+    connect(model, &QAbstractItemModel::rowsMoved, this, [this](QModelIndex, int start, int, QModelIndex, int end) {
+        if (start != end) {
+            auto scroll = ui->timeline_events->verticalScrollBar()->value();
+            auto item = timeline.events[start];
+            timeline.events.removeAt(start);
+            timeline.events.insert(end, item);
+            represent();
+            ui->timeline_events->verticalScrollBar()->setValue(scroll);
         }
     });
 }
@@ -156,6 +169,24 @@ void MainWindow::getIndexes(QVector<Event> events)
     }
 }
 
+void MainWindow::represent()
+{
+    ui->timeline_events->clear();
+    getIndexes(timeline.events);
+
+    for (int i = 0; i < timeline.events.count(); i++) {
+        auto evPointer = &timeline.events[i];
+        auto itemWidget = new EventListItem();
+        itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
+        itemWidget->setEvent(evPointer);
+        itemWidget->represent();
+
+        QListWidgetItem * item = new QListWidgetItem();
+        ui->timeline_events->addItem(item);
+        ui->timeline_events->setItemWidget(item, itemWidget);
+    }
+}
+
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -182,20 +213,7 @@ void MainWindow::on_timeline_load_clicked()
         ui->timeline_id->setText(timeline.uniqueName);
         ui->timeline_name->setText(timeline.name);
 
-        ui->timeline_events->clear();
-        getIndexes(timeline.events);
-
-        for (int i = 0; i < timeline.events.count(); i++) {
-            auto evPointer = &timeline.events[i];
-            auto itemWidget = new EventListItem();
-            itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
-            itemWidget->setEvent(evPointer);
-            itemWidget->represent();
-
-            QListWidgetItem * item = new QListWidgetItem();
-            ui->timeline_events->addItem(item);
-            ui->timeline_events->setItemWidget(item, itemWidget);
-        }
+        represent();
     }
 }
 
@@ -295,5 +313,58 @@ void MainWindow::on_groupBox_toggled(bool arg1)
     ui->groupBox->setMinimumHeight(100 * arg1);
     ui->groupBox->setMaximumHeight(arg1 ? 16777215 : 20);
     qDebug() << arg1;
+}
+
+
+void MainWindow::on_timeline_id_editingFinished()
+{
+    timeline.uniqueName = ui->timeline_id->text();
+}
+
+
+void MainWindow::on_timeline_name_editingFinished()
+{
+    timeline.name = ui->timeline_name->text();
+}
+
+
+void MainWindow::on_pushButton_16_clicked()
+{
+    timeline.events.append(Event());
+
+    auto evPointer = &(timeline.events[timeline.events.count() - 1]);
+    auto itemWidget = new EventListItem();
+    itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
+    itemWidget->setEvent(evPointer);
+    itemWidget->represent();
+
+    QListWidgetItem * item = new QListWidgetItem();
+    ui->timeline_events->addItem(item);
+    ui->timeline_events->setItemWidget(item, itemWidget);
+    ui->timeline_events->scrollToBottom();
+}
+
+
+void MainWindow::on_pushButton_19_clicked()
+{
+    int row = ui->timeline_events->currentRow();
+    if (row >= 0) {
+        timeline.events.removeAt(row);
+        delete ui->timeline_events->takeItem(row);
+    }
+}
+
+
+void MainWindow::on_pushButton_20_clicked()
+{
+    QJsonObject obj = timeline.toJson();
+    QJsonDocument doc;
+    doc.setObject(obj);
+    QFile f(ui->timeline->text());
+    if (f.open(QFile::WriteOnly)) {
+        f.write(doc.toJson());
+        f.flush();
+        f.close();
+    }
 }
 

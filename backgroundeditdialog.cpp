@@ -118,7 +118,7 @@ void BackgroundEditDialog::on_video_combobox_currentTextChanged(const QString &a
 void BackgroundEditDialog::on_fade_combobox_toggled(bool checked)
 {
     if (ready) {
-        ui->fade_combobox->setEnabled(checked);
+        ui->fade->setEnabled(checked);
         if (!checked)
             e->background.fade = 0.0;
         else

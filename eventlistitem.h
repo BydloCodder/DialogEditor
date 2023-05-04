@@ -47,6 +47,12 @@ private slots:
 
     void on_choicesButton_clicked();
 
+    void on_timer_checkbox_toggled(bool checked);
+
+    void on_id_returnPressed();
+
+    void on_timer_valueChanged(double arg1);
+
 private:
     Ui::EventListItem *ui;
 

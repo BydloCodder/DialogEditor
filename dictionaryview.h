@@ -19,7 +19,7 @@ public:
     ~DictionaryView();
     QHash<QString, QString> *dict = 0;
 
-    bool addFiles = false;
+    bool addFiles = true;
 
     void setColumnNames(QString key, QString value);
 signals:

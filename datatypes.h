@@ -42,6 +42,8 @@ struct Event {
 
     bool backgroundActive = false, playSoundActive = false;
 
+    double timer = 0.0;
+
     QVector<Choice> choices;
     QHash<QString, QString> state;
 

@@ -127,6 +127,15 @@ void EventListItem::represent()
         ui->choicesButton->setText("Choices");
         ui->choicesButton->setChecked(false);
     }
+
+    if (e->timer > 0) {
+        ui->timer_checkbox->setChecked(true);
+        ui->timer->setValue(e->timer);
+        ui->timer->setEnabled(true);
+    } else {
+        ui->timer_checkbox->setChecked(false);
+        ui->timer->setEnabled(false);
+    }
     ready = true;
 }
 
@@ -155,8 +164,10 @@ void EventListItem::on_idCombobox_toggled(bool checked)
     ui->id->setEnabled(checked);
     if (ready) {
         e->id = checked ? ui->id->text() : "";
-        if (checked && !ui->id->text().isEmpty() && !idList->contains(ui->id->text()))
+        if (checked && !ui->id->text().isEmpty() && !idList->contains(ui->id->text())) {
                 idList->append(ui->id->text());
+                idList->removeDuplicates();
+        }
     }
 }
 
@@ -200,10 +211,11 @@ void EventListItem::on_jumpto_currentTextChanged(const QString &arg1)
 
 void EventListItem::on_id_editingFinished()
 {
-    if (ready && ui->jumpCombobox->isChecked()) {
+    if (ready && ui->idCombobox->isChecked()) {
         e->id = ui->id->text();
         if (!idList->contains(ui->id->text()))
             idList->append(ui->id->text());
+        idList->removeDuplicates();
     }
 }
 
@@ -218,6 +230,7 @@ void EventListItem::on_statsButton_clicked()
 {
     auto dialog = new DictionaryView();
     dialog->setColumnNames("Key", "Value");
+    dialog->setWindowTitle("Stats");
     dialog->dict = &e->state;
     dialog->addFiles = false;
     dialog->mapDict();
@@ -230,11 +243,34 @@ void EventListItem::on_statsButton_clicked()
 void EventListItem::on_choicesButton_clicked()
 {
     auto dialog = new ChoicesEditDialog();
+    dialog->setWindowTitle("Choices Edit");
     dialog->choices = &e->choices;
     dialog->setBase(backgrounds, sounds, videos, characters,idList);
     dialog->represent();
     dialog->exec();
     represent();
     dialog->deleteLater();
+}
+
+
+void EventListItem::on_timer_checkbox_toggled(bool checked)
+{
+    if (ready) {
+        ui->timer->setEnabled(checked);
+        e->timer = checked ? ui->timer->value() : 0.0;
+    }
+}
+
+
+void EventListItem::on_id_returnPressed()
+{
+    on_id_editingFinished();
+}
+
+
+void EventListItem::on_timer_valueChanged(double arg1)
+{
+    if (ready)
+        e->timer = arg1;
 }
 

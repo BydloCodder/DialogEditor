@@ -171,8 +171,11 @@
       <property name="styleSheet">
        <string notr="true">
 QListWidget::item { 
-height: 100px; 
-margin: 10px;
+height: 120px; 
+margin-left: 10px;
+margin-right: 10px;
+margin-top: 4px;
+margin-bottom: 4px;
 }
 
 QListWidget::item:selected

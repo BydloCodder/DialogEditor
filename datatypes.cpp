@@ -133,6 +133,9 @@ Event Event::fromJson(QJsonObject obj)
             result.state[k] = stateObject[k].toString();
         }
     }
+
+    if (obj.contains("timer"))
+        result.timer = obj["timer"].toDouble();
     return result;
 }
 
@@ -166,6 +169,8 @@ QJsonObject Event::toJson() const
         }
         result["state"] = obj;
     }
+    if (timer > 0.0)
+        result["timer"] = timer;
     return result;
 }
 

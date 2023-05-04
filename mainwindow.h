@@ -28,6 +28,7 @@ public:
     QHash<QString, QString> loadDictionary(QString filename, QString res);
     void saveDictionary(QString filename, QHash<QString, QString> &dict, QString res);
     void getIndexes(QVector<Event> events);
+    void represent();
     ~MainWindow();
 
 private slots:
@@ -52,6 +53,16 @@ private slots:
     void on_characters_edit_clicked();
 
     void on_groupBox_toggled(bool arg1);
+
+    void on_timeline_id_editingFinished();
+
+    void on_timeline_name_editingFinished();
+
+    void on_pushButton_16_clicked();
+
+    void on_pushButton_19_clicked();
+
+    void on_pushButton_20_clicked();
 
 private:
 
