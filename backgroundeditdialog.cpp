@@ -38,29 +38,29 @@ void BackgroundEditDialog::setBase(QHash<QString, QString> *backgrounds, QHash<Q
 void BackgroundEditDialog::represent()
 {
     ui->background_box->setChecked(e->backgroundActive);
-    ui->imageCheckbox->setChecked(!e->background.name.isEmpty());
-    if (!e->background.name.isEmpty()) {
-        ui->image_combobox->setCurrentText(e->background.name);
+    ui->imageCheckbox->setChecked(!e->background->name.isEmpty());
+    if (!e->background->name.isEmpty()) {
+        ui->image_combobox->setCurrentText(e->background->name);
         ui->image_combobox->setEnabled(true);
     } else {
         ui->image_combobox->setEnabled(false);
     }
-    ui->video_checkbox->setChecked(!e->background.video.isEmpty());
-    if (!e->background.video.isEmpty()) {
-        ui->video_combobox->setCurrentText(e->background.video);
+    ui->video_checkbox->setChecked(!e->background->video.isEmpty());
+    if (!e->background->video.isEmpty()) {
+        ui->video_combobox->setCurrentText(e->background->video);
         ui->video_combobox->setEnabled(true);
     } else
         ui->video_combobox->setEnabled(false);
-    ui->fade_combobox->setChecked(e->background.fade > 0.0);
-    if (e->background.fade > 0.0) {
+    ui->fade_combobox->setChecked(e->background->fade > 0.0);
+    if (e->background->fade > 0.0) {
         ui->fade->setEnabled(true);
-        ui->fade->setValue(e->background.fade);
+        ui->fade->setValue(e->background->fade);
     }
-    ui->clickable_checkbox->setCheckState(e->background.clickable == -1 ? Qt::Unchecked :
-                                          e->background.clickable == 0 ? Qt::PartiallyChecked : Qt::Checked);
+    ui->clickable_checkbox->setCheckState(e->background->clickable == -1 ? Qt::Unchecked :
+                                                                           e->background->clickable == 0 ? Qt::PartiallyChecked : Qt::Checked);
 
-    if (!e->background.name.isEmpty() && backgrounds->contains(e->background.name)) {
-        QImage img((*backgrounds)[e->background.name]);
+    if (!e->background->name.isEmpty() && backgrounds->contains(e->background->name)) {
+        QImage img((*backgrounds)[e->background->name]);
         ui->preview->setPixmap(QPixmap::fromImage(img.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
     }
     ready = true;
@@ -72,10 +72,10 @@ void BackgroundEditDialog::on_imageCheckbox_toggled(bool checked)
 {
     if (ready) {
         if (checked) {
-            e->background.name = ui->image_combobox->currentText();
+            e->background->name = ui->image_combobox->currentText();
             ui->image_combobox->setEnabled(true);
         } else {
-            e->background.name = "";
+            e->background->name = "";
             ui->image_combobox->setEnabled(false);
         }
     }
@@ -87,9 +87,9 @@ void BackgroundEditDialog::on_image_combobox_currentTextChanged(const QString &a
 {
     if (ready) {
         if (ui->imageCheckbox->isChecked()) {
-            e->background.name = arg1;
+            e->background->name = arg1;
             if ((*backgrounds).contains(arg1)) {
-                QImage img((*backgrounds)[e->background.name]);
+                QImage img((*backgrounds)[e->background->name]);
                 ui->preview->setPixmap(QPixmap::fromImage(img.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
             }
         }
@@ -101,8 +101,8 @@ void BackgroundEditDialog::on_video_checkbox_toggled(bool checked)
 {
     if (ready) {
         ui->video_combobox->setEnabled(checked);
-        if (checked) e->background.video = ui->video_combobox->currentText();
-        else e->background.video = "";
+        if (checked) e->background->video = ui->video_combobox->currentText();
+        else e->background->video = "";
     }
 }
 
@@ -110,7 +110,7 @@ void BackgroundEditDialog::on_video_combobox_currentTextChanged(const QString &a
 {
     if (ready) {
         if (ui->imageCheckbox->isChecked()) {
-            e->background.video = arg1;
+            e->background->video = arg1;
         }
     }
 }
@@ -120,9 +120,9 @@ void BackgroundEditDialog::on_fade_combobox_toggled(bool checked)
     if (ready) {
         ui->fade->setEnabled(checked);
         if (!checked)
-            e->background.fade = 0.0;
+            e->background->fade = 0.0;
         else
-            e->background.fade = ui->fade->value();
+            e->background->fade = ui->fade->value();
     }
 }
 
@@ -130,7 +130,7 @@ void BackgroundEditDialog::on_fade_valueChanged(double arg1)
 {
     if (ready) {
         if (ui->fade_combobox->isChecked()) {
-            e->background.fade = arg1;
+            e->background->fade = arg1;
         }
     }
 }
@@ -138,7 +138,7 @@ void BackgroundEditDialog::on_fade_valueChanged(double arg1)
 void BackgroundEditDialog::on_clickable_checkbox_stateChanged(int arg1)
 {
     if (ready) {
-        e->background.clickable = arg1 - 1;
+        e->background->clickable = arg1 - 1;
     }
 }
 

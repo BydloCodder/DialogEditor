@@ -5,18 +5,17 @@
 
 #include "datatypes.h"
 
-Event::Background Event::Background::fromJson(QJsonObject obj)
+Event::Background::Background(QJsonObject obj)
 {
-    Event::Background result;
     if (obj.contains("video"))
-        result.video = obj["video"].toString();
+        video = obj["video"].toString();
     if (obj.contains("name"))
-        result.name = obj["name"].toString();
+        name = obj["name"].toString();
     if (obj.contains("fade"))
-        result.fade = obj["fade"].toDouble();
+        fade = obj["fade"].toDouble();
     if (obj.contains("clickable"))
-        result.clickable = obj["clickable"].toBool() ? 1 : 0;
-    return result;
+        clickable = obj["clickable"].toBool() ? 1 : 0;
+
 }
 
 QJsonObject Event::Background::toJson() const
@@ -34,20 +33,18 @@ QJsonObject Event::Background::toJson() const
 }
 
 
-Event::PlaySound Event::PlaySound::fromJson(QJsonObject obj)
+Event::PlaySound::PlaySound(QJsonObject obj)
 {
-    Event::PlaySound result;
-    result.name = obj["name"].toString();
-    result.channel = obj["channel"].toString();
+    name = obj["name"].toString();
+    channel = obj["channel"].toString();
     if (obj.contains("bus"))
-        result.bus = obj["bus"].toString();
+        bus = obj["bus"].toString();
     if (obj.contains("fade"))
-        result.fade = obj["fade"].toDouble();
+        fade = obj["fade"].toDouble();
     if (obj.contains("volume"))
-        result.volume = obj["volume"].toDouble();
+        volume = obj["volume"].toDouble();
     if (obj.contains("loop"))
-        result.loop = obj["loop"].toBool();
-    return result;
+        loop = obj["loop"].toBool();
 }
 
 QJsonObject Event::PlaySound::toJson() const
@@ -64,20 +61,21 @@ QJsonObject Event::PlaySound::toJson() const
     if (loop)
         result["loop"] = loop;
     return result;
-
 }
 
-
-
-Event::Choice Event::Choice::fromJson(QJsonObject obj)
+Event::Choice::Choice(QJsonObject obj)
 {
-    Event::Choice result;
-    result.text = obj["text"].toString();
+    text = obj["text"].toString();
     QJsonArray events = obj["events"].toArray();
     foreach(auto v, events) {
-        result.events.append(Event::fromJson(v.toObject()));
+        auto e = new Event(v.toObject());
+        this->events.append(e);
     }
-    return result;
+    if (obj.contains("condition")) {
+        conditionActive = true;
+        condition = new Event::Condition(obj["condition"].toObject());
+    } else
+        condition = new Event::Condition();
 }
 
 QJsonObject Event::Choice::toJson() const
@@ -86,62 +84,73 @@ QJsonObject Event::Choice::toJson() const
     result["text"] = text;
     QJsonArray arr;
     foreach (auto e, events) {
-        arr.append(e.toJson());
+        arr.append(e->toJson());
     }
     result["events"] = arr;
+
+    if (conditionActive) {
+        result["condition"] = condition->toJson();
+    }
+
     return result;
 }
 
 
-Event Event::fromJson(QJsonObject obj)
+Event::Event(QJsonObject obj)
 {
-    Event result;
     if (obj.contains("id"))
-        result.id = obj["id"].toString();
+        id = obj["id"].toString();
 
     if (obj.contains("text"))
-        result.text = obj["text"].toString();
+        text = obj["text"].toString();
     if (obj.contains("character"))
-        result.character = obj["character"].toString();
+        character = obj["character"].toString();
     else
-        result.character = ":ignore:";
+        character = ":ignore:";
 
     if (obj.contains("jump_to"))
-        result.jump = obj["jump_to"].toString();
+        jump = obj["jump_to"].toString();
     if (obj.contains("stop_sound"))
-        result.stopSound = obj["stop_sound"].toString();
+        stopSound = obj["stop_sound"].toString();
 
     if (obj.contains("background")) {
-        result.background = Event::Background::fromJson(obj["background"].toObject());
-        result.backgroundActive = true;
-    }
+        auto b = new Event::Background(obj["background"].toObject());
+        background = b;
+        backgroundActive = true;
+    } else
+        background = new Event::Background();
+
     if (obj.contains("play_sound")) {
-        result.playSound = Event::PlaySound::fromJson(obj["play_sound"].toObject());
-        result.playSoundActive = true;
-    }
+        auto p = new Event::PlaySound(obj["play_sound"].toObject());
+        playSound = p;
+        playSoundActive = true;
+    } else
+        playSound = new Event::PlaySound();
 
     if (obj.contains("choices")) {
         QJsonArray array = obj["choices"].toArray();
         foreach (auto v, array) {
-            result.choices.append(Event::Choice::fromJson(v.toObject()));
+            auto c = new Event::Choice(v.toObject());
+            choices.append(c);
         }
     }
 
     if (obj.contains("state")) {
         QJsonObject stateObject = obj["state"].toObject();
         foreach (auto k, stateObject.keys()) {
-            result.state[k] = stateObject[k].toString();
+            state[k] = stateObject[k].toString();
         }
     }
 
     if (obj.contains("condition")) {
-        result.condition = Event::Condition::fromJson(obj["condition"].toObject());
-        result.conditionActive = true;
-    }
+        auto c = new Event::Condition(obj["condition"].toObject());
+        condition = c;
+        conditionActive = true;
+    } else
+        condition = new Event::Condition();
 
     if (obj.contains("timer"))
-        result.timer = obj["timer"].toDouble();
-    return result;
+        timer = obj["timer"].toDouble();
 }
 
 QJsonObject Event::toJson() const
@@ -157,15 +166,15 @@ QJsonObject Event::toJson() const
     if (!stopSound.isEmpty())
         result["stop_sound"] = stopSound;
     if (backgroundActive)
-        result["background"] = background.toJson();
+        result["background"] = background->toJson();
     if (playSoundActive)
-        result["play_sound"] = playSound.toJson();
+        result["play_sound"] = playSound->toJson();
     if (conditionActive)
-        result["condition"] = condition.toJson();
+        result["condition"] = condition->toJson();
     if (choices.count() > 0) {
         QJsonArray array;
         foreach (auto c, choices) {
-            array.append(c.toJson());
+            array.append(c->toJson());
         }
         result["choices"] = array;
     }
@@ -190,7 +199,9 @@ Timeline Timeline::fromJson(QJsonObject obj)
 
     QJsonArray eventArray = obj["events"].toArray();
     foreach (auto e, eventArray) {
-        result.events.append(Event::fromJson(e.toObject()));
+        auto o = e.toObject();
+        auto ev = new Event(o);
+        result.events.append(ev);
     }
     return result;
 }
@@ -202,7 +213,7 @@ QJsonObject Timeline::toJson() const
     result["display_name"] = name;
     QJsonArray arr;
     foreach (auto e, events) {
-        arr.append(e.toJson());
+        arr.append(e->toJson());
     }
     result["events"] = arr;
     return result;
@@ -238,23 +249,22 @@ QJsonObject Characters::toJson(QString res)
 }
 
 
-Event::Condition Event::Condition::fromJson(QJsonObject obj)
+Event::Condition::Condition(QJsonObject obj)
 {
-    Event::Condition result;
-    result.op = obj["op"].toString();
+    op = obj["op"].toString();
     if (obj.contains("var"))
-        result.var = obj["var"].toString();
+        var = obj["var"].toString();
     if (obj.contains("value"))
-        result.value = obj["value"].toString();
+        value = obj["value"].toString();
     if (obj.contains("data")) {
         auto array = obj["data"].toArray();
         foreach (auto i, array) {
-            result.data.append(Event::Condition::fromJson(i.toObject()));
+            auto c = new Event::Condition(i.toObject());
+            data.append(c);
         }
     }
     if (obj.contains("cast"))
-        result.cast = obj["cast"].toString();
-    return result;
+        cast = obj["cast"].toString();
 }
 
 QJsonObject Event::Condition::toJson() const
@@ -271,7 +281,7 @@ QJsonObject Event::Condition::toJson() const
 
     QJsonArray array;
     foreach (auto c, data) {
-        array.append(c.toJson());
+        array.append(c->toJson());
     }
     if (array.count() > 0)
         result["data"] = array;
@@ -288,7 +298,7 @@ QString Event::Condition::toString() const
     else {
         QString result;
         for (int i = 0; i < data.count(); i++) {
-            result += data[i].toString();
+            result += data[i]->toString();
             if (i != data.count() - 1)
                 result += " " + op + " ";
         }
@@ -302,17 +312,4 @@ bool Event::Condition::logical() const
     return s.contains(op);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 

@@ -78,9 +78,9 @@ void EventListItem::represent()
 
     if (e->conditionActive) {
         ui->checkBox->setChecked(true);
-        QString s = QString("if " + e->condition.toString());
+        QString s = QString("if " + e->condition->toString());
         ui->checkBox->setText(s.length() > 30 ? s.first(30) : s);
-        ui->checkBox->setToolTip("if " + e->condition.toString());
+        ui->checkBox->setToolTip("if " + e->condition->toString());
     } else {
         ui->checkBox->setChecked(false);
         ui->checkBox->setText("Condition");
@@ -89,17 +89,17 @@ void EventListItem::represent()
 
     if (e->backgroundActive) {
         ui->backgroundCombobox->setChecked(true);
-        if (!e->background.name.isEmpty() && backgrounds->contains(e->background.name)) {
-            QImage img((*backgrounds)[e->background.name]);
+        if (!e->background->name.isEmpty() && backgrounds->contains(e->background->name)) {
+            QImage img((*backgrounds)[e->background->name]);
             ui->bgPreview->setPixmap(QPixmap::fromImage(img.scaled(ui->bgPreview->size(),Qt::KeepAspectRatio, Qt::SmoothTransformation)));
         } else {
             ui->bgPreview->clear();
             QString s = "[";
 
-            if (e->background.clickable >= 0)
-                s += QString(" clickable: ") + (e->background.clickable ? "true;" : "false;");
-            else if (!e->background.video.isEmpty())
-                s += " video: " + e->background.video + ";";
+            if (e->background->clickable >= 0)
+                s += QString(" clickable: ") + (e->background->clickable ? "true;" : "false;");
+            else if (!e->background->video.isEmpty())
+                s += " video: " + e->background->video + ";";
             else s += " clean;";
             s += " ]";
             ui->bgPreview->setText(s);
@@ -110,7 +110,7 @@ void EventListItem::represent()
     }
 
     if (e->playSoundActive) {
-        ui->soundButton->setText("Play sound [" + e->playSound.name + "->" +e->playSound.channel + "]");
+        ui->soundButton->setText("Play sound [" + e->playSound->name + "->" +e->playSound->channel + "]");
         ui->soundButton->setChecked(true);
     } else {
         ui->soundButton->setText("Sound");
@@ -292,7 +292,7 @@ void EventListItem::on_checkBox_toggled(bool checked)
     if (ready) {
         if (checked) {
             auto dialog = new ConditionEditor();
-            dialog->condition = &e->condition;
+            dialog->condition = e->condition;
             dialog->represent();
             dialog->exec();
             e->conditionActive = true;

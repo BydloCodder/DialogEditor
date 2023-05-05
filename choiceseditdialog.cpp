@@ -34,7 +34,7 @@ void ChoicesEditDialog::represent()
     int prevRow = ui->choices_list->currentRow();
     ui->choices_list->clear();
     foreach (auto c, *choices) {
-        ui->choices_list->addItem(c.text);
+        ui->choices_list->addItem(c->text);
     }
     if (!ready) {
         ready = true;
@@ -48,11 +48,11 @@ void ChoicesEditDialog::represent()
 void ChoicesEditDialog::on_choices_list_currentRowChanged(int currentRow)
 {
     if (ready && currentRow >= 0 && choices->count() > 0) {
-        ui->choices_text->setText((*choices)[currentRow].text);
+        ui->choices_text->setText((*choices)[currentRow]->text);
         ui->events_list->clear();
 
-        for (int i = 0; i < (*choices)[currentRow].events.count(); i++) {
-            auto evPointer = &((*choices)[currentRow].events[i]);
+        for (int i = 0; i < (*choices)[currentRow]->events.count(); i++) {
+            auto evPointer = (*choices)[currentRow]->events[i];
             auto itemWidget = new EventListItem();
             itemWidget->setBase(backgrounds, sounds, videos, characters, idList);
             itemWidget->setEvent(evPointer);
@@ -69,17 +69,17 @@ void ChoicesEditDialog::on_choices_list_currentRowChanged(int currentRow)
 
 void ChoicesEditDialog::on_pushButton_clicked()
 {
-    Event::Choice c;
-    c.text = "New choice";
+    auto c = new Event::Choice();
+    c->text = "New choice";
     choices->append(c);
-    ui->choices_list->addItem(c.text);
+    ui->choices_list->addItem(c->text);
     ui->choices_list->setCurrentRow(ui->choices_list->count() - 1);
 }
 
 void ChoicesEditDialog::on_choices_text_returnPressed()
 {
     if (ui->choices_list->currentRow() >= 0) {
-        (*choices)[ui->choices_list->currentRow()].text = ui->choices_text->text();
+        (*choices)[ui->choices_list->currentRow()]->text = ui->choices_text->text();
         ui->choices_list->item(ui->choices_list->currentRow())->setText(ui->choices_text->text());
     }
 }
@@ -102,7 +102,8 @@ void ChoicesEditDialog::on_addEventButton_clicked()
 {
     int choiceIndex = ui->choices_list->currentRow();
     if (choiceIndex >= 0 && choices->count() > 0) {
-        ((*choices)[choiceIndex]).events.append(Event());
+        auto e = new Event();
+        ((*choices)[choiceIndex])->events.append(e);
         represent();
     }
 }
@@ -113,7 +114,7 @@ void ChoicesEditDialog::on_removeEventButton_clicked()
     int currentRow = ui->events_list->currentRow();
     int choiceRow = ui->choices_list->currentRow();
     if (currentRow >= 0) {
-        (*choices)[choiceRow].events.removeAt(currentRow);
+        (*choices)[choiceRow]->events.removeAt(currentRow);
         auto item = ui->events_list->takeItem(currentRow);
         delete item;
     }

@@ -28,7 +28,7 @@ void ConditionEditor::represent()
     ui->data->setEnabled(condition->logical());
     ui->data->clear();
     foreach (auto c, condition->data) {
-        ui->data->addItem(c.toString());
+        ui->data->addItem(c->toString());
     }
 
     ready = true;
@@ -79,7 +79,8 @@ void ConditionEditor::on_cast_combobox_currentTextChanged(const QString &arg1)
 
 void ConditionEditor::on_pushButton_clicked()
 {
-    condition->data.append(Event::Condition());
+    auto c = new Event::Condition();
+    condition->data.append(c);
     represent();
 }
 
@@ -98,7 +99,7 @@ void ConditionEditor::on_data_itemDoubleClicked(QListWidgetItem *)
 {
     int row = ui->data->currentRow();
     auto dialog = new ConditionEditor();
-    dialog->condition = &condition->data[row];
+    dialog->condition = condition->data[row];
     dialog->represent();
     dialog->exec();
     represent();

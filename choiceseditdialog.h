@@ -19,7 +19,7 @@ public:
 
     void represent();
 
-    QVector<Event::Choice> *choices;
+    QVector<Event::Choice*> *choices;
 
 private slots:
     void on_choices_list_currentRowChanged(int currentRow);

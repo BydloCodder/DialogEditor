@@ -23,13 +23,13 @@ void SoundEditDialog::represent()
     ui->playBox->setChecked(e->playSoundActive);
     ui->stopBox->setChecked(!e->stopSound.isEmpty());
     ui->stopsound_channel->setText(e->stopSound);
-    ui->playsound_channel->setText(e->playSound.channel);
-    ui->bus->setText(e->playSound.bus);
-    ui->fade_checkbox->setChecked(e->playSound.fade != 0.0);
-    ui->fade->setValue(e->playSound.fade);
-    ui->volume->setValue(e->playSound.volume * 100);
-    ui->sound->setCurrentText(e->playSound.name);
-    ui->loop->setChecked(e->playSound.loop);
+    ui->playsound_channel->setText(e->playSound->channel);
+    ui->bus->setText(e->playSound->bus);
+    ui->fade_checkbox->setChecked(e->playSound->fade != 0.0);
+    ui->fade->setValue(e->playSound->fade);
+    ui->volume->setValue(e->playSound->volume * 100);
+    ui->sound->setCurrentText(e->playSound->name);
+    ui->loop->setChecked(e->playSound->loop);
     ready = true;
 }
 
@@ -62,42 +62,42 @@ void SoundEditDialog::on_stopsound_channel_editingFinished()
 
 void SoundEditDialog::on_loop_stateChanged(int arg1)
 {
-    if (ready) e->playSound.loop = arg1;
+    if (ready) e->playSound->loop = arg1;
 }
 
 
 void SoundEditDialog::on_fade_valueChanged(double arg1)
 {
-    if (ready) e->playSound.fade = arg1;
+    if (ready) e->playSound->fade = arg1;
 }
 
 
 void SoundEditDialog::on_fade_checkbox_toggled(bool checked)
 {
-    if (ready) e->playSound.fade = checked ? ui->fade->value() : 0.0;
+    if (ready) e->playSound->fade = checked ? ui->fade->value() : 0.0;
 }
 
 
 void SoundEditDialog::on_volume_sliderReleased()
 {
-    if (ready) e->playSound.volume = 0.01 * ui->volume->value();
+    if (ready) e->playSound->volume = 0.01 * ui->volume->value();
 }
 
 
 void SoundEditDialog::on_bus_editingFinished()
 {
-    if (ready) e->playSound.bus = ui->bus->text();
+    if (ready) e->playSound->bus = ui->bus->text();
 }
 
 
 void SoundEditDialog::on_sound_currentTextChanged(const QString &arg1)
 {
-    if (ready) e->playSound.name = arg1;
+    if (ready) e->playSound->name = arg1;
 }
 
 
 void SoundEditDialog::on_playsound_channel_editingFinished()
 {
-    if (ready) e->playSound.channel = ui->playsound_channel->text();
+    if (ready) e->playSound->channel = ui->playsound_channel->text();
 }
 

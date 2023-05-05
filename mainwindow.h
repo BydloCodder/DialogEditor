@@ -8,7 +8,6 @@
 #include "datatypes.h"
 #include "dictionaryview.h"
 #include "charactersview.h"
-#include "eventlistitem.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -27,7 +26,7 @@ public:
     QJsonObject readJson(QString filename);
     QHash<QString, QString> loadDictionary(QString filename, QString res);
     void saveDictionary(QString filename, QHash<QString, QString> &dict, QString res);
-    void getIndexes(QVector<Event> events);
+    void getIndexes(QVector<Event *> events);
     void represent();
     ~MainWindow();
 

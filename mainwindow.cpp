@@ -10,6 +10,7 @@
 #include <QListWidgetItem>
 #include <QVector>
 #include <QScrollBar>
+#include "eventlistitem.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -157,14 +158,14 @@ void MainWindow::saveDictionary(QString filename, QHash<QString, QString> &dict,
     }
 }
 
-void MainWindow::getIndexes(QVector<Event> events)
+void MainWindow::getIndexes(QVector<Event*> events)
 {
     foreach (auto ev, events) {
-        if (!ev.id.isEmpty())
-            idList.append(ev.id);
-        if (!ev.choices.empty()) {
-            foreach (auto choice, ev.choices)
-                getIndexes(choice.events);
+        if (!ev->id.isEmpty())
+            idList.append(ev->id);
+        if (!ev->choices.empty()) {
+            foreach (auto choice, ev->choices)
+                getIndexes(choice->events);
         }
     }
 }
@@ -175,7 +176,7 @@ void MainWindow::represent()
     getIndexes(timeline.events);
 
     for (int i = 0; i < timeline.events.count(); i++) {
-        auto evPointer = &timeline.events[i];
+        auto evPointer = timeline.events[i];
         auto itemWidget = new EventListItem();
         itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
         itemWidget->setEvent(evPointer);
@@ -330,12 +331,12 @@ void MainWindow::on_timeline_name_editingFinished()
 
 void MainWindow::on_pushButton_16_clicked()
 {
-    timeline.events.append(Event());
+    auto ev = new Event();
+    timeline.events.append(ev);
 
-    auto evPointer = &(timeline.events[timeline.events.count() - 1]);
     auto itemWidget = new EventListItem();
     itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
-    itemWidget->setEvent(evPointer);
+    itemWidget->setEvent(ev);
     itemWidget->represent();
 
     QListWidgetItem * item = new QListWidgetItem();
