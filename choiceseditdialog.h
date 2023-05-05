@@ -34,6 +34,10 @@ private slots:
 
     void on_removeEventButton_clicked();
 
+    void on_choices_list_currentTextChanged(const QString &currentText);
+
+    void on_condition_combobox_toggled(bool checked);
+
 private:
     Ui::ChoicesEditDialog *ui;
     bool ready = false;

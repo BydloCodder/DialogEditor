@@ -2,6 +2,7 @@
 #include "eventlistitem.h"
 #include "ui_choiceseditdialog.h"
 #include <QModelIndex>
+#include "conditioneditor.h"
 
 ChoicesEditDialog::ChoicesEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -63,6 +64,20 @@ void ChoicesEditDialog::on_choices_list_currentRowChanged(int currentRow)
             ui->events_list->addItem(item);
             ui->events_list->setItemWidget(item, itemWidget);
         }
+        ui->condition_combobox->setEnabled(true);
+        bool hasCondition = (*choices)[currentRow]->conditionActive;
+        ui->condition_combobox->setChecked(hasCondition);
+        if (hasCondition) {
+            QString s = QString("if " + (*choices)[currentRow]->condition->toString());
+            ui->condition_combobox->setText(s.length() > 16 ? s.first(16) : s);
+            ui->condition_combobox->setToolTip("if " + (*choices)[currentRow]->condition->toString());
+        } else {
+            ui->condition_combobox->setText("Condition");
+            ui->condition_combobox->setToolTip("");
+        }
+    }
+    if (currentRow == -1) {
+        ui->condition_combobox->setEnabled(false);
     }
 }
 
@@ -117,6 +132,34 @@ void ChoicesEditDialog::on_removeEventButton_clicked()
         (*choices)[choiceRow]->events.removeAt(currentRow);
         auto item = ui->events_list->takeItem(currentRow);
         delete item;
+    }
+}
+
+
+void ChoicesEditDialog::on_choices_list_currentTextChanged(const QString &currentText)
+{
+
+}
+
+
+void ChoicesEditDialog::on_condition_combobox_toggled(bool checked)
+{
+    static bool r = false;
+    if (ready && r) {
+        if (checked) {
+            auto dialog = new ConditionEditor();
+            dialog->condition = ((*choices)[ui->choices_list->currentRow()])->condition;
+            dialog->represent();
+            dialog->exec();
+            ((*choices)[ui->choices_list->currentRow()])->conditionActive = true;
+            represent();
+            dialog->deleteLater();
+        } else {
+            ((*choices)[ui->choices_list->currentRow()])->conditionActive = false;
+            represent();
+        }
+    } else {
+        r = true;
     }
 }
 
