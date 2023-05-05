@@ -5,6 +5,7 @@
 #include "backgroundeditdialog.h"
 #include "dictionaryview.h"
 #include "choiceseditdialog.h"
+#include "conditioneditor.h"
 
 EventListItem::EventListItem(QWidget *parent) :
     QWidget(parent),
@@ -73,6 +74,17 @@ void EventListItem::represent()
         ui->jumpCombobox->setChecked(true);
         ui->jumpto->setEnabled(true);
         ui->jumpto->setCurrentText(e->jump);
+    }
+
+    if (e->conditionActive) {
+        ui->checkBox->setChecked(true);
+        QString s = QString("if " + e->condition.toString());
+        ui->checkBox->setText(s.length() > 30 ? s.first(30) : s);
+        ui->checkBox->setToolTip("if " + e->condition.toString());
+    } else {
+        ui->checkBox->setChecked(false);
+        ui->checkBox->setText("Condition");
+        ui->checkBox->setToolTip("");
     }
 
     if (e->backgroundActive) {
@@ -272,5 +284,24 @@ void EventListItem::on_timer_valueChanged(double arg1)
 {
     if (ready)
         e->timer = arg1;
+}
+
+
+void EventListItem::on_checkBox_toggled(bool checked)
+{
+    if (ready) {
+        if (checked) {
+            auto dialog = new ConditionEditor();
+            dialog->condition = &e->condition;
+            dialog->represent();
+            dialog->exec();
+            e->conditionActive = true;
+            represent();
+            dialog->deleteLater();
+        } else {
+            e->conditionActive = false;
+            represent();
+        }
+    }
 }
 

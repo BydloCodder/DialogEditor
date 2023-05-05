@@ -134,6 +134,11 @@ Event Event::fromJson(QJsonObject obj)
         }
     }
 
+    if (obj.contains("condition")) {
+        result.condition = Event::Condition::fromJson(obj["condition"].toObject());
+        result.conditionActive = true;
+    }
+
     if (obj.contains("timer"))
         result.timer = obj["timer"].toDouble();
     return result;
@@ -155,6 +160,8 @@ QJsonObject Event::toJson() const
         result["background"] = background.toJson();
     if (playSoundActive)
         result["play_sound"] = playSound.toJson();
+    if (conditionActive)
+        result["condition"] = condition.toJson();
     if (choices.count() > 0) {
         QJsonArray array;
         foreach (auto c, choices) {
@@ -230,6 +237,71 @@ QJsonObject Characters::toJson(QString res)
     return result;
 }
 
+
+Event::Condition Event::Condition::fromJson(QJsonObject obj)
+{
+    Event::Condition result;
+    result.op = obj["op"].toString();
+    if (obj.contains("var"))
+        result.var = obj["var"].toString();
+    if (obj.contains("value"))
+        result.value = obj["value"].toString();
+    if (obj.contains("data")) {
+        auto array = obj["data"].toArray();
+        foreach (auto i, array) {
+            result.data.append(Event::Condition::fromJson(i.toObject()));
+        }
+    }
+    if (obj.contains("cast"))
+        result.cast = obj["cast"].toString();
+    return result;
+}
+
+QJsonObject Event::Condition::toJson() const
+{
+    QJsonObject result;
+    result["op"] = op;
+    if (!logical()) {
+        result["var"] = var;
+        result["value"] = value;
+    }
+
+    if (!cast.isEmpty())
+        result["cast"] = cast;
+
+    QJsonArray array;
+    foreach (auto c, data) {
+        array.append(c.toJson());
+    }
+    if (array.count() > 0)
+        result["data"] = array;
+    return result;
+}
+
+QString Event::Condition::toString() const
+{
+    if (!logical()) {
+        if (var.isEmpty() && value.isEmpty())
+            return "true";
+        return var + " " + op + " " + (value.isEmpty() ? QString("\"\"") : value);
+    }
+    else {
+        QString result;
+        for (int i = 0; i < data.count(); i++) {
+            result += data[i].toString();
+            if (i != data.count() - 1)
+                result += " " + op + " ";
+        }
+        return result;
+    }
+}
+
+bool Event::Condition::logical() const
+{
+    QString s = "nandnor";
+    return s.contains(op);
+
+}
 
 
 

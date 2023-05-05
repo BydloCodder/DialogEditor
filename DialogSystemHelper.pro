@@ -13,6 +13,7 @@ SOURCES += \
     charactersview.cpp \
     choiceseditdialog.cpp \
     clickablelabel.cpp \
+    conditioneditor.cpp \
     datatypes.cpp \
     dictionaryview.cpp \
     eventlistitem.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     charactersview.h \
     choiceseditdialog.h \
     clickablelabel.h \
+    conditioneditor.h \
     datatypes.h \
     dictionaryview.h \
     eventlistitem.h \
@@ -35,6 +37,7 @@ FORMS += \
     backgroundeditdialog.ui \
     charactersview.ui \
     choiceseditdialog.ui \
+    conditioneditor.ui \
     dictionaryview.ui \
     eventlistitem.ui \
     mainwindow.ui \

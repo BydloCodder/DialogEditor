@@ -40,7 +40,18 @@ struct Event {
         QJsonObject toJson() const;
     };
 
+    struct Condition {
+        QString op = "==", var, value, cast;
+        QVector<Condition> data;
+
+        static Condition fromJson(QJsonObject obj);
+        QJsonObject toJson() const;
+        QString toString() const;
+        bool logical() const;
+    } condition;
+
     bool backgroundActive = false, playSoundActive = false;
+    bool conditionActive = false;
 
     double timer = 0.0;
 
