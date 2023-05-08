@@ -109,6 +109,8 @@ void PersonEditor::on_appear_checkbox_toggled(bool checked)
     ui->appear_time->setEnabled(checked);
     ui->appear_backwards->setEnabled(checked);
     p->appear = checked;
+    if (!ui->appear_combobox->currentText().isEmpty())
+        p->appearAnimation = ui->appear_combobox->currentText();
 }
 
 

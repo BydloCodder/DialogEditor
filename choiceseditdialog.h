@@ -38,9 +38,14 @@ private slots:
 
     void on_condition_combobox_toggled(bool checked);
 
+    void on_condition_combobox_clicked();
+
+    void on_condition_combobox_pressed();
+
 private:
     Ui::ChoicesEditDialog *ui;
     bool ready = false;
+    bool conditionReady = false;
     QHash<QString, QString> * backgrounds, *sounds, *videos;
     Characters* characters;
     QStringList * idList;

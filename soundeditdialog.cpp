@@ -40,8 +40,10 @@ SoundEditDialog::~SoundEditDialog()
 
 void SoundEditDialog::on_playBox_toggled(bool arg1)
 {
-    if (ready)
+    if (ready) {
         e->playSoundActive = arg1;
+        e->playSound->name = ui->sound->currentText();
+    }
 }
 
 

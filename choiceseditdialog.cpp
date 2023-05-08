@@ -144,22 +144,31 @@ void ChoicesEditDialog::on_choices_list_currentTextChanged(const QString &curren
 
 void ChoicesEditDialog::on_condition_combobox_toggled(bool checked)
 {
-    static bool r = false;
-    if (ready && r) {
-        if (checked) {
+
+}
+
+
+void ChoicesEditDialog::on_condition_combobox_clicked()
+{
+    if (ready && conditionReady) {
+        if (ui->condition_combobox->isChecked()) {
             auto dialog = new ConditionEditor();
             dialog->condition = ((*choices)[ui->choices_list->currentRow()])->condition;
             dialog->represent();
             dialog->exec();
-            ((*choices)[ui->choices_list->currentRow()])->conditionActive = true;
+            choices->at(ui->choices_list->currentRow())->conditionActive = true;
             represent();
             dialog->deleteLater();
         } else {
-            ((*choices)[ui->choices_list->currentRow()])->conditionActive = false;
+            choices->at(ui->choices_list->currentRow())->conditionActive = false;
             represent();
         }
-    } else {
-        r = true;
     }
+}
+
+
+void ChoicesEditDialog::on_condition_combobox_pressed()
+{
+    conditionReady = true;
 }
 

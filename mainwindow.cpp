@@ -384,3 +384,21 @@ void MainWindow::on_pushButton_20_clicked()
     }
 }
 
+
+void MainWindow::on_timeline_id_textChanged(const QString &arg1)
+{
+     timeline.uniqueName = arg1;
+}
+
+
+void MainWindow::on_timeline_id_returnPressed()
+{
+
+}
+
+
+void MainWindow::on_timeline_name_textChanged(const QString &arg1)
+{
+    timeline.name = arg1;
+}
+

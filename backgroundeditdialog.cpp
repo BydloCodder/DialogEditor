@@ -74,6 +74,9 @@ void BackgroundEditDialog::on_imageCheckbox_toggled(bool checked)
         if (checked) {
             e->background->name = ui->image_combobox->currentText();
             ui->image_combobox->setEnabled(true);
+            if (!e->background->name.isEmpty()) {
+                on_image_combobox_currentTextChanged(e->background->name);
+            }
         } else {
             e->background->name = "";
             ui->image_combobox->setEnabled(false);

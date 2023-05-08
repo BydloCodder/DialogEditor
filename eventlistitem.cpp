@@ -321,3 +321,14 @@ void EventListItem::on_persons_button_clicked()
     dialog->deleteLater();
 }
 
+
+void EventListItem::on_id_textChanged(const QString &arg1)
+{
+    if (ready && ui->idCombobox->isChecked()) {
+        e->id = arg1;
+        if (!idList->contains(arg1))
+            idList->append(arg1);
+        idList->removeDuplicates();
+    }
+}
+

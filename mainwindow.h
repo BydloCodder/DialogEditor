@@ -63,6 +63,12 @@ private slots:
 
     void on_pushButton_20_clicked();
 
+    void on_timeline_id_textChanged(const QString &arg1);
+
+    void on_timeline_id_returnPressed();
+
+    void on_timeline_name_textChanged(const QString &arg1);
+
 private:
 
     bool firstLoad = true;

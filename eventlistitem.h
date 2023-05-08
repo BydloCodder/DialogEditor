@@ -57,6 +57,8 @@ private slots:
 
     void on_persons_button_clicked();
 
+    void on_id_textChanged(const QString &arg1);
+
 private:
     Ui::EventListItem *ui;
 
