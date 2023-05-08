@@ -15,6 +15,7 @@ struct Event {
         background = new Background();
         playSound = new PlaySound();
         condition = new Condition();
+        persons = new Persons();
     }
 
     Event(QJsonObject obj);
