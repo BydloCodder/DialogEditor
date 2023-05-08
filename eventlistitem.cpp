@@ -6,6 +6,7 @@
 #include "dictionaryview.h"
 #include "choiceseditdialog.h"
 #include "conditioneditor.h"
+#include "personeditor.h"
 
 EventListItem::EventListItem(QWidget *parent) :
     QWidget(parent),
@@ -108,6 +109,7 @@ void EventListItem::represent()
         ui->backgroundCombobox->setChecked(false);
         ui->bgPreview->clear();
     }
+    ui->persons_button->setChecked(e->persons->isActive());
 
     if (e->playSoundActive) {
         ui->soundButton->setText("Play sound [" + e->playSound->name + "->" +e->playSound->channel + "]");
@@ -303,5 +305,19 @@ void EventListItem::on_checkBox_toggled(bool checked)
             represent();
         }
     }
+}
+
+
+void EventListItem::on_persons_button_clicked()
+{
+    auto dialog = new PersonEditor();
+    dialog->e = e;
+
+    dialog->represent();
+    dialog->setBase(characters);
+    dialog->show("left");
+    dialog->exec();
+    represent();
+    dialog->deleteLater();
 }
 

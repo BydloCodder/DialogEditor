@@ -25,6 +25,15 @@ void CharactersView::mapDict()
         ui->tableWidget->setItem(rowIndex, 2, new QTableWidgetItem((*dict).characters[k].portrait));
         rowIndex++;
     }
+    ui->person_name->setText("");
+    ui->mood_name->setText("");
+
+    ui->persons_list->clear();
+    dict->persons.remove("");
+    foreach (auto k, dict->persons.keys()) {
+        ui->persons_list->addItem(k);
+    }
+    ui->moods_box->setEnabled(false);
 }
 
 CharactersView::~CharactersView()
@@ -39,13 +48,11 @@ void CharactersView::on_pushButton_3_clicked()
         Characters::Character c;
         c.name = ui->tableWidget->item(i, 1)->text();
         c.portrait = ui->tableWidget->item(i, 2)->text();
-        (*dict).characters[ui->tableWidget->item(i, 0)->text()] = c;
+        dict->characters[ui->tableWidget->item(i, 0)->text()] = c;
     }
-    mapDict();
     emit editingFinished();
     this->close();
 }
-
 
 void CharactersView::on_pushButton_2_clicked()
 {
@@ -59,7 +66,6 @@ void CharactersView::on_pushButton_2_clicked()
     }
 }
 
-
 void CharactersView::on_pushButton_clicked()
 {
     auto fileList = QFileDialog::getOpenFileNames();
@@ -72,9 +78,109 @@ void CharactersView::on_pushButton_clicked()
             Characters::Character c;
             c.name = info.baseName();
             c.portrait = fn;
-            (*dict).characters[name] = c;
+            dict->characters[name] = c;
         }
         mapDict();
     }
 }
 
+void CharactersView::on_persons_list_currentTextChanged(const QString &currentText)
+{
+    if (!currentText.isEmpty()) {
+        ui->moods_list->clear();
+        foreach (auto s, dict->persons[currentText].keys())
+            ui->moods_list->addItem(s);
+        ui->person_name->setText(currentText);
+        ui->moods_box->setEnabled(true);
+    }
+}
+
+
+void CharactersView::on_moods_list_currentTextChanged(const QString &currentText)
+{
+    if (!currentText.isEmpty()) {
+        ui->mood_name->setText(currentText);
+        ui->mood_file->setText(dict->persons[ui->persons_list->currentItem()->text()][currentText]);
+    }
+}
+
+void CharactersView::on_mood_name_returnPressed()
+{
+    QString s = ui->mood_name->text();
+    QString oldKey = ui->moods_list->currentItem()->text();
+    QString person = ui->persons_list->currentItem()->text();
+    QString value =  dict->persons[person][oldKey];
+    dict->persons[person][s] = value;
+    dict->persons[person].remove(oldKey);
+    ui->moods_list->currentItem()->setText(s);
+}
+
+void CharactersView::on_person_name_returnPressed()
+{
+    int currentRow = ui->persons_list->currentRow();
+    if (currentRow >= 0) {
+        QString oldName = ui->persons_list->currentItem()->text();
+        dict->persons[ui->person_name->text()] = dict->persons[oldName];
+        dict->persons.remove(oldName);
+        ui->persons_list->currentItem()->setText(ui->person_name->text());
+    }
+}
+
+void CharactersView::on_pushButton_4_clicked()
+{
+    QHash<QString, QString> moods;
+    dict->persons["new person"] = moods;
+    mapDict();
+}
+
+void CharactersView::on_pushButton_5_clicked()
+{
+    if (ui->persons_list->currentRow() >= 0 && !ui->persons_list->currentItem()->text().isEmpty()) {
+        dict->persons.remove(ui->persons_list->currentItem()->text());
+        mapDict();
+    }
+}
+
+void CharactersView::on_pushButton_6_clicked()
+{
+    int pRow = ui->persons_list->currentRow();
+    if (pRow >= 0) {
+        dict->persons[ui->persons_list->currentItem()->text()]["newMood"] = "";
+        mapDict();
+    }
+}
+
+void CharactersView::on_mood_file_returnPressed()
+{
+    int pRow = ui->persons_list->currentRow();
+    int mRow = ui->moods_list->currentRow();
+    if (pRow >= 0 && mRow >= 0) {
+        dict->persons[ui->persons_list->currentItem()->text()][ui->moods_list->currentItem()->text()] = ui->mood_file->text();
+        mapDict();
+    }
+}
+
+
+
+void CharactersView::on_pushButton_7_clicked()
+{
+    int pRow = ui->persons_list->currentRow();
+    int mRow = ui->moods_list->currentRow();
+    if (pRow >= 0 && mRow >= 0) {
+        dict->persons[ui->persons_list->currentItem()->text()].remove(ui->moods_list->currentItem()->text());
+        mapDict();
+    }
+}
+
+void CharactersView::on_openfile_button_clicked()
+{
+    int pRow = ui->persons_list->currentRow();
+    int mRow = ui->moods_list->currentRow();
+    if (pRow >= 0 && mRow >= 0) {
+        QString filename = QFileDialog::getOpenFileName();
+        if (!filename.isEmpty()) {
+            dict->persons[ui->persons_list->currentItem()->text()][ui->moods_list->currentItem()->text()] = filename;
+            mapDict();
+        }
+    }
+}

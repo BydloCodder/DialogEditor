@@ -30,6 +30,26 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void on_persons_list_currentTextChanged(const QString &currentText);
+
+    void on_moods_list_currentTextChanged(const QString &currentText);
+
+    void on_mood_name_returnPressed();
+
+    void on_person_name_returnPressed();
+
+    void on_pushButton_4_clicked();
+
+    void on_pushButton_5_clicked();
+
+    void on_pushButton_6_clicked();
+
+    void on_mood_file_returnPressed();
+
+    void on_pushButton_7_clicked();
+
+    void on_openfile_button_clicked();
+
 private:
     Ui::CharactersView *ui;
 };

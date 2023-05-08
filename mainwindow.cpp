@@ -296,9 +296,24 @@ void MainWindow::on_videos_edit_clicked()
 
 void MainWindow::on_characters_edit_clicked()
 {
-    charactersWidget->mapDict();
-    charactersWidget->setWindowTitle("Characters");
-    charactersWidget->exec();
+    auto dialog = new CharactersView();
+    dialog->setWindowTitle("Characters");
+    dialog->dict = &characters;
+    dialog->mapDict();
+    dialog->exec();
+
+    if (!this->ui->characters->text().isEmpty()) {
+        auto obj = characters.toJson(ui->res_base->text());
+        QJsonDocument doc;
+        doc.setObject(obj);
+        QFile f(this->ui->characters->text());
+        if (f.open(QFile::WriteOnly)) {
+            f.write(doc.toJson());
+            f.flush();
+            f.close();
+        }
+    }
+    dialog->deleteLater();
 }
 
 void MainWindow::on_groupBox_toggled(bool arg1)

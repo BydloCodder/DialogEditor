@@ -19,6 +19,7 @@ SOURCES += \
     eventlistitem.cpp \
     main.cpp \
     mainwindow.cpp \
+    personeditor.cpp \
     soundeditdialog.cpp
 
 HEADERS += \
@@ -31,6 +32,7 @@ HEADERS += \
     dictionaryview.h \
     eventlistitem.h \
     mainwindow.h \
+    personeditor.h \
     soundeditdialog.h
 
 FORMS += \
@@ -41,6 +43,7 @@ FORMS += \
     dictionaryview.ui \
     eventlistitem.ui \
     mainwindow.ui \
+    personeditor.ui \
     soundeditdialog.ui
 
 # Default rules for deployment.

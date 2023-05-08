@@ -55,6 +55,8 @@ private slots:
 
     void on_checkBox_toggled(bool checked);
 
+    void on_persons_button_clicked();
+
 private:
     Ui::EventListItem *ui;
 

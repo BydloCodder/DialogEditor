@@ -149,6 +149,13 @@ Event::Event(QJsonObject obj)
     } else
         condition = new Event::Condition();
 
+    if (obj.contains("persons")) {
+        auto p = new Event::Persons(obj["persons"].toObject());
+        persons = p;
+        personsActive = true;
+    } else
+        persons = new Event::Persons();
+
     if (obj.contains("timer"))
         timer = obj["timer"].toDouble();
 }
@@ -171,6 +178,8 @@ QJsonObject Event::toJson() const
         result["play_sound"] = playSound->toJson();
     if (conditionActive)
         result["condition"] = condition->toJson();
+    if (persons->isActive())
+        result["persons"] = persons->toJson();
     if (choices.count() > 0) {
         QJsonArray array;
         foreach (auto c, choices) {
@@ -230,6 +239,15 @@ Characters Characters::fromJson(QJsonObject obj, QString res)
         chr.portrait = s.replace("res:/", res);
         result.characters[k] = chr;
     }
+    foreach (auto k, obj["persons"].toObject().keys()) {
+        QJsonObject person = obj["persons"].toObject()[k].toObject();
+        QHash<QString, QString> data;
+        foreach (auto mood, person.keys()) {
+            QString s = person[mood].toString();
+            data[mood] = s.replace("res:/", res);
+        }
+        result.persons[k] = data;
+    }
     return result;
 }
 
@@ -245,9 +263,19 @@ QJsonObject Characters::toJson(QString res)
         chars[k] = current;
     }
     result["characters"] = chars;
+
+    QJsonObject pers;
+    foreach (auto k, persons.keys()) {
+        QJsonObject current;
+        foreach (auto mood, persons[k].keys()) {
+            QString s = persons[k][mood];
+            current[mood] = s.replace(res, "res:/");
+        }
+        pers[k] = current;
+    }
+    result["persons"] = pers;
     return result;
 }
-
 
 Event::Condition::Condition(QJsonObject obj)
 {
@@ -313,3 +341,80 @@ bool Event::Condition::logical() const
 
 }
 
+
+Event::Persons::Persons(QJsonObject obj)
+{
+    foreach (auto s, QStringList() << "left" << "middle-left" << "middle" << "middle-right" << "right") {
+        if (obj.contains(s)) {
+            auto p = new Person(obj[s].toObject());
+            data[s] = p;
+        }
+    }
+}
+
+QJsonObject Event::Persons::toJson() const
+{
+    QJsonObject result;
+    foreach (auto k, data.keys()) {
+        if (data[k]->isActive())
+            result[k] = data[k]->toJson();
+    }
+    return result;
+}
+
+bool Event::Persons::isActive() const
+{
+    bool result = false;
+    foreach (auto k, data.keys()) {
+        result = data[k]->isActive();
+    }
+    return result;
+}
+
+Event::Persons::Person::Person(QJsonObject obj)
+{
+    if (obj.contains("op"))
+        op = obj["op"].toString();
+    if (obj.contains("person"))
+        person = obj["person"].toString();
+    if (obj.contains("mood"))
+        mood = obj["mood"].toString();
+    if (obj.contains("appear")) {
+        appear = true;
+        if (obj.contains("appearAnimation"))
+            appearAnimation = obj["appearAnimation"].toString();
+        if (obj.contains("appearTime"))
+            appearTime = obj["appearTime"].toDouble();
+        if (obj.contains("appearBackwards"))
+            appearBackwards = obj["appearBackwards"].toBool();
+    }
+    if (obj.contains("fade")) {
+        fade = true;
+        if (obj.contains("fadeTime"))
+            fadeTime = obj["fadeTime"].toDouble();
+        if (obj.contains("fadeBackwards"))
+            fadeBackwards = obj["fadeBackwards"].toBool();
+    }
+}
+
+QJsonObject Event::Persons::Person::toJson() const
+{
+    QJsonObject result;
+    result["op"] = op;
+    result["person"] = person;
+    result["mood"] = mood;
+    if (appear) {
+        result["appear"] = true;
+        result["appearAnimation"] = appearAnimation;
+        result["appearTime"] = appearTime;
+        result["appearBackwards"] = appearBackwards;
+    } else
+        result["appear"] = false;
+    if (fade) {
+        result["fade"] = true;
+        result["fadeTime"] = fadeTime;
+        result["fadeBackwards"] = fadeBackwards;
+    } else
+        result["fade"] = false;
+    return result;
+}

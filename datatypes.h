@@ -66,6 +66,40 @@ struct Event {
     };
     Condition *condition = 0;
 
+    struct Persons {
+        Persons() {}
+        ~Persons() {}
+        Persons(QJsonObject obj);
+
+        struct Person {
+            Person() {}
+            Person(QJsonObject obj);
+            ~Person() {}
+            QString op = "Ignore";
+            QString person, mood;
+            bool appear = false, fade = false;
+            QString appearAnimation;
+            double appearTime = 1.0, fadeTime = 1.0;
+            bool appearBackwards = false, fadeBackwards = false;
+
+            inline bool isActive() const {
+                if (op == "Ignore")
+                    return false;
+                if (op == "Show")
+                    return !person.isEmpty() && !mood.isEmpty();
+                return true;
+            }
+
+            QJsonObject toJson() const;
+        };
+        QHash<QString, Person*> data;
+
+        QJsonObject toJson() const;
+        bool isActive() const;
+    };
+
+    Persons *persons = 0;
+
     struct Choice {
         Choice() {condition = new Event::Condition(); }
         ~Choice() {delete condition;}
@@ -79,8 +113,9 @@ struct Event {
         QJsonObject toJson() const;
     };
 
+
     bool backgroundActive = false, playSoundActive = false;
-    bool conditionActive = false;
+    bool conditionActive = false, personsActive = false;
 
     double timer = 0.0;
 
@@ -106,6 +141,8 @@ struct Characters
         QString name, portrait;
     };
     QHash<QString, Character> characters;
+
+    QHash<QString, QHash<QString, QString> > persons;
 
     static Characters fromJson(QJsonObject obj, QString res);
     QJsonObject toJson(QString res);
