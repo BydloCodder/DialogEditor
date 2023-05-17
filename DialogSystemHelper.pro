@@ -13,13 +13,13 @@ SOURCES += \
     charactersview.cpp \
     choiceseditdialog.cpp \
     clickablelabel.cpp \
-    conditioneditor.cpp \
     datatypes.cpp \
     dictionaryview.cpp \
     eventlistitem.cpp \
     main.cpp \
     mainwindow.cpp \
     personeditor.cpp \
+    scriptdialog.cpp \
     soundeditdialog.cpp
 
 HEADERS += \
@@ -27,23 +27,23 @@ HEADERS += \
     charactersview.h \
     choiceseditdialog.h \
     clickablelabel.h \
-    conditioneditor.h \
     datatypes.h \
     dictionaryview.h \
     eventlistitem.h \
     mainwindow.h \
     personeditor.h \
+    scriptdialog.h \
     soundeditdialog.h
 
 FORMS += \
     backgroundeditdialog.ui \
     charactersview.ui \
     choiceseditdialog.ui \
-    conditioneditor.ui \
     dictionaryview.ui \
     eventlistitem.ui \
     mainwindow.ui \
     personeditor.ui \
+    scriptdialog.ui \
     soundeditdialog.ui
 
 # Default rules for deployment.

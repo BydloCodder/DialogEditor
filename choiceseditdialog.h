@@ -36,11 +36,8 @@ private slots:
 
     void on_choices_list_currentTextChanged(const QString &currentText);
 
-    void on_condition_combobox_toggled(bool checked);
 
-    void on_condition_combobox_clicked();
-
-    void on_condition_combobox_pressed();
+    void on_script_clicked();
 
 private:
     Ui::ChoicesEditDialog *ui;

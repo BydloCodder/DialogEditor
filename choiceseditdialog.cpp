@@ -1,8 +1,8 @@
 #include "choiceseditdialog.h"
 #include "eventlistitem.h"
 #include "ui_choiceseditdialog.h"
+#include "scriptdialog.h"
 #include <QModelIndex>
-#include "conditioneditor.h"
 
 ChoicesEditDialog::ChoicesEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -64,20 +64,7 @@ void ChoicesEditDialog::on_choices_list_currentRowChanged(int currentRow)
             ui->events_list->addItem(item);
             ui->events_list->setItemWidget(item, itemWidget);
         }
-        ui->condition_combobox->setEnabled(true);
-        bool hasCondition = (*choices)[currentRow]->conditionActive;
-        ui->condition_combobox->setChecked(hasCondition);
-        if (hasCondition) {
-            QString s = QString("if " + (*choices)[currentRow]->condition->toString());
-            ui->condition_combobox->setText(s.length() > 16 ? s.first(16) : s);
-            ui->condition_combobox->setToolTip("if " + (*choices)[currentRow]->condition->toString());
-        } else {
-            ui->condition_combobox->setText("Condition");
-            ui->condition_combobox->setToolTip("");
-        }
-    }
-    if (currentRow == -1) {
-        ui->condition_combobox->setEnabled(false);
+        ui->script->setChecked(!((*choices)[currentRow]->condition.isEmpty()));
     }
 }
 
@@ -135,40 +122,21 @@ void ChoicesEditDialog::on_removeEventButton_clicked()
     }
 }
 
-
 void ChoicesEditDialog::on_choices_list_currentTextChanged(const QString &currentText)
 {
 
 }
 
 
-void ChoicesEditDialog::on_condition_combobox_toggled(bool checked)
+void ChoicesEditDialog::on_script_clicked()
 {
-
-}
-
-
-void ChoicesEditDialog::on_condition_combobox_clicked()
-{
-    if (ready && conditionReady) {
-        if (ui->condition_combobox->isChecked()) {
-            auto dialog = new ConditionEditor();
-            dialog->condition = ((*choices)[ui->choices_list->currentRow()])->condition;
-            dialog->represent();
-            dialog->exec();
-            choices->at(ui->choices_list->currentRow())->conditionActive = true;
-            represent();
-            dialog->deleteLater();
-        } else {
-            choices->at(ui->choices_list->currentRow())->conditionActive = false;
-            represent();
-        }
+    if (ready) {
+        auto dialog = new ScriptDialog();
+        dialog->c = (*choices)[ui->choices_list->currentRow()];
+        dialog->represent();
+        dialog->exec();
+        represent();
+        dialog->deleteLater();
     }
-}
-
-
-void ChoicesEditDialog::on_condition_combobox_pressed()
-{
-    conditionReady = true;
 }
 

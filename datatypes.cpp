@@ -72,10 +72,8 @@ Event::Choice::Choice(QJsonObject obj)
         this->events.append(e);
     }
     if (obj.contains("condition")) {
-        conditionActive = true;
-        condition = new Event::Condition(obj["condition"].toObject());
-    } else
-        condition = new Event::Condition();
+        condition = obj["condition"].toString();
+    }
 }
 
 QJsonObject Event::Choice::toJson() const
@@ -88,8 +86,8 @@ QJsonObject Event::Choice::toJson() const
     }
     result["events"] = arr;
 
-    if (conditionActive) {
-        result["condition"] = condition->toJson();
+    if (!condition.isEmpty()) {
+        result["condition"] = condition;
     }
 
     return result;
@@ -100,6 +98,8 @@ Event::Event(QJsonObject obj)
 {
     if (obj.contains("id"))
         id = obj["id"].toString();
+    if (obj.contains("script"))
+        script = obj["script"].toString();
 
     if (obj.contains("text"))
         text = obj["text"].toString();
@@ -142,13 +142,6 @@ Event::Event(QJsonObject obj)
         }
     }
 
-    if (obj.contains("condition")) {
-        auto c = new Event::Condition(obj["condition"].toObject());
-        condition = c;
-        conditionActive = true;
-    } else
-        condition = new Event::Condition();
-
     if (obj.contains("persons")) {
         auto p = new Event::Persons(obj["persons"].toObject());
         persons = p;
@@ -176,8 +169,6 @@ QJsonObject Event::toJson() const
         result["background"] = background->toJson();
     if (playSoundActive)
         result["play_sound"] = playSound->toJson();
-    if (conditionActive)
-        result["condition"] = condition->toJson();
     if (persons->isActive())
         result["persons"] = persons->toJson();
     if (choices.count() > 0) {
@@ -196,6 +187,8 @@ QJsonObject Event::toJson() const
     }
     if (timer > 0.0)
         result["timer"] = timer;
+    if (!script.isEmpty())
+        result["script"] = script;
     return result;
 }
 
@@ -276,71 +269,6 @@ QJsonObject Characters::toJson(QString res)
     result["persons"] = pers;
     return result;
 }
-
-Event::Condition::Condition(QJsonObject obj)
-{
-    op = obj["op"].toString();
-    if (obj.contains("var"))
-        var = obj["var"].toString();
-    if (obj.contains("value"))
-        value = obj["value"].toString();
-    if (obj.contains("data")) {
-        auto array = obj["data"].toArray();
-        foreach (auto i, array) {
-            auto c = new Event::Condition(i.toObject());
-            data.append(c);
-        }
-    }
-    if (obj.contains("cast"))
-        cast = obj["cast"].toString();
-}
-
-QJsonObject Event::Condition::toJson() const
-{
-    QJsonObject result;
-    result["op"] = op;
-    if (!logical()) {
-        result["var"] = var;
-        result["value"] = value;
-    }
-
-    if (!cast.isEmpty())
-        result["cast"] = cast;
-
-    QJsonArray array;
-    foreach (auto c, data) {
-        array.append(c->toJson());
-    }
-    if (array.count() > 0)
-        result["data"] = array;
-    return result;
-}
-
-QString Event::Condition::toString() const
-{
-    if (!logical()) {
-        if (var.isEmpty() && value.isEmpty())
-            return "true";
-        return var + " " + op + " " + (value.isEmpty() ? QString("\"\"") : value);
-    }
-    else {
-        QString result;
-        for (int i = 0; i < data.count(); i++) {
-            result += data[i]->toString();
-            if (i != data.count() - 1)
-                result += " " + op + " ";
-        }
-        return result;
-    }
-}
-
-bool Event::Condition::logical() const
-{
-    QString s = "nandnor";
-    return s.contains(op);
-
-}
-
 
 Event::Persons::Persons(QJsonObject obj)
 {

@@ -5,8 +5,8 @@
 #include "backgroundeditdialog.h"
 #include "dictionaryview.h"
 #include "choiceseditdialog.h"
-#include "conditioneditor.h"
 #include "personeditor.h"
+#include "scriptdialog.h"
 
 EventListItem::EventListItem(QWidget *parent) :
     QWidget(parent),
@@ -77,17 +77,6 @@ void EventListItem::represent()
         ui->jumpto->setCurrentText(e->jump);
     }
 
-    if (e->conditionActive) {
-        ui->checkBox->setChecked(true);
-        QString s = QString("if " + e->condition->toString());
-        ui->checkBox->setText(s.length() > 30 ? s.first(30) : s);
-        ui->checkBox->setToolTip("if " + e->condition->toString());
-    } else {
-        ui->checkBox->setChecked(false);
-        ui->checkBox->setText("Condition");
-        ui->checkBox->setToolTip("");
-    }
-
     if (e->backgroundActive) {
         ui->backgroundCombobox->setChecked(true);
         if (!e->background->name.isEmpty() && backgrounds->contains(e->background->name)) {
@@ -141,6 +130,7 @@ void EventListItem::represent()
         ui->choicesButton->setText("Choices");
         ui->choicesButton->setChecked(false);
     }
+    ui->script->setChecked(!e->script.isEmpty());
 
     if (e->timer > 0) {
         ui->timer_checkbox->setChecked(true);
@@ -275,7 +265,6 @@ void EventListItem::on_timer_checkbox_toggled(bool checked)
     }
 }
 
-
 void EventListItem::on_id_returnPressed()
 {
     on_id_editingFinished();
@@ -288,24 +277,6 @@ void EventListItem::on_timer_valueChanged(double arg1)
         e->timer = arg1;
 }
 
-
-void EventListItem::on_checkBox_toggled(bool checked)
-{
-    if (ready) {
-        if (checked) {
-            auto dialog = new ConditionEditor();
-            dialog->condition = e->condition;
-            dialog->represent();
-            dialog->exec();
-            e->conditionActive = true;
-            represent();
-            dialog->deleteLater();
-        } else {
-            e->conditionActive = false;
-            represent();
-        }
-    }
-}
 
 
 void EventListItem::on_persons_button_clicked()
@@ -330,5 +301,16 @@ void EventListItem::on_id_textChanged(const QString &arg1)
             idList->append(arg1);
         idList->removeDuplicates();
     }
+}
+
+
+void EventListItem::on_script_clicked()
+{
+    auto dialog = new ScriptDialog();
+    dialog->e = e;
+    dialog->represent();
+    dialog->exec();
+    represent();
+    dialog->deleteLater();
 }
 

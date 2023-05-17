@@ -53,11 +53,11 @@ private slots:
 
     void on_timer_valueChanged(double arg1);
 
-    void on_checkBox_toggled(bool checked);
-
     void on_persons_button_clicked();
 
     void on_id_textChanged(const QString &arg1);
+
+    void on_script_clicked();
 
 private:
     Ui::EventListItem *ui;

@@ -14,7 +14,6 @@ struct Event {
     Event() {
         background = new Background();
         playSound = new PlaySound();
-        condition = new Condition();
         persons = new Persons();
     }
 
@@ -23,7 +22,6 @@ struct Event {
     ~Event() {
         delete background;
         delete playSound;
-        delete condition;
     }
 
     struct Background {
@@ -52,20 +50,6 @@ struct Event {
         QJsonObject toJson() const;
     };
     PlaySound *playSound = 0;
-
-    struct Condition {
-        Condition() {}
-        ~Condition() {}
-        Condition(QJsonObject obj);
-
-        QString op = "==", var, value, cast;
-        QVector<Condition*> data;
-
-        QJsonObject toJson() const;
-        QString toString() const;
-        bool logical() const;
-    };
-    Condition *condition = 0;
 
     struct Persons {
         Persons() {}
@@ -102,26 +86,25 @@ struct Event {
     Persons *persons = 0;
 
     struct Choice {
-        Choice() {condition = new Event::Condition(); }
-        ~Choice() {delete condition;}
+        Choice() {}
+        ~Choice() {}
         Choice(QJsonObject obj);
 
         QString text;
         QVector<Event*> events;
-        bool conditionActive = false;
-        Condition *condition = 0;
+        QString condition;
 
         QJsonObject toJson() const;
     };
 
 
-    bool backgroundActive = false, playSoundActive = false;
-    bool conditionActive = false, personsActive = false;
+    bool backgroundActive = false, playSoundActive = false, personsActive = false;
 
     double timer = 0.0;
 
     QVector<Choice*> choices;
     QHash<QString, QString> state;
+    QString script;
 
     QJsonObject toJson() const;
 };
