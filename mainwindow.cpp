@@ -347,7 +347,11 @@ void MainWindow::on_timeline_name_editingFinished()
 void MainWindow::on_pushButton_16_clicked()
 {
     auto ev = new Event();
-    timeline.events.append(ev);
+    auto r = ui->timeline_events->currentRow();
+    if (r > -1)
+        timeline.events.insert(r, ev);
+    else
+        timeline.events.append(ev);
 
     auto itemWidget = new EventListItem();
     itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
@@ -355,9 +359,12 @@ void MainWindow::on_pushButton_16_clicked()
     itemWidget->represent();
 
     QListWidgetItem * item = new QListWidgetItem();
-    ui->timeline_events->addItem(item);
+    if (r > -1)
+        ui->timeline_events->insertItem(r, item);
+    else
+        ui->timeline_events->addItem(item);
     ui->timeline_events->setItemWidget(item, itemWidget);
-    ui->timeline_events->scrollToBottom();
+    ui->timeline_events->scrollToItem(item);
 }
 
 
