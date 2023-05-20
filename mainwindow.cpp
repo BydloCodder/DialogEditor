@@ -61,12 +61,19 @@ MainWindow::MainWindow(QWidget *parent)
     auto model = ui->timeline_events->model();
     connect(model, &QAbstractItemModel::rowsMoved, this, [this](QModelIndex, int start, int, QModelIndex, int end) {
         if (start != end) {
-            auto scroll = ui->timeline_events->verticalScrollBar()->value();
-            auto item = timeline.events[start];
-            timeline.events.removeAt(start);
-            timeline.events.insert(end, item);
-            represent();
-            ui->timeline_events->verticalScrollBar()->setValue(scroll);
+            if (std::abs(start-end) > 1) {
+                auto scroll = ui->timeline_events->verticalScrollBar()->value();
+                auto item = timeline.events[start];
+                timeline.events.removeAt(start);
+                timeline.events.insert(end > 1 ? end - 1 : end, item);
+                represent();
+                ui->timeline_events->verticalScrollBar()->setValue(scroll);
+            } else {
+                auto scroll = ui->timeline_events->verticalScrollBar()->value();
+                timeline.events.swapItemsAt(start, end);
+                represent();
+                ui->timeline_events->verticalScrollBar()->setValue(scroll);
+            }
         }
     });
 }

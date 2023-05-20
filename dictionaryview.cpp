@@ -23,7 +23,9 @@ void DictionaryView::mapDict()
     ui->tableWidget->setRowCount(dict->count());
 
     int rowIndex = 0;
-    foreach (auto k, dict->keys()) {
+    auto list = dict->keys();
+    list.sort();
+    foreach (auto k, list) {
         ui->tableWidget->setItem(rowIndex, 0, new QTableWidgetItem(k));
         ui->tableWidget->setItem(rowIndex, 1, new QTableWidgetItem((*dict)[k]));
         rowIndex++;

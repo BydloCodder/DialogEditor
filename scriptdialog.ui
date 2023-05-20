@@ -36,7 +36,7 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QPlainTextEdit" name="script"/>
+       <widget class="QTextEdit" name="script"/>
       </item>
      </layout>
     </widget>

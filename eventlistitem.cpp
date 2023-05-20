@@ -82,6 +82,7 @@ void EventListItem::represent()
         if (!e->background->name.isEmpty() && backgrounds->contains(e->background->name)) {
             QImage img((*backgrounds)[e->background->name]);
             ui->bgPreview->setPixmap(QPixmap::fromImage(img.scaled(ui->bgPreview->size(),Qt::KeepAspectRatio, Qt::SmoothTransformation)));
+            ui->bgName->setText(e->background->name);
         } else {
             ui->bgPreview->clear();
             QString s = "[";
