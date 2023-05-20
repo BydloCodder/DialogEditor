@@ -97,6 +97,7 @@ void EventListItem::represent()
         }
     } else {
         ui->backgroundCombobox->setChecked(false);
+        ui->bgName->setText("");
         ui->bgPreview->clear();
     }
     ui->persons_button->setChecked(e->persons->isActive());

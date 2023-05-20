@@ -196,11 +196,19 @@ void MainWindow::represent()
         auto itemWidget = new EventListItem();
         itemWidget->setBase(&backgrounds, &sounds, &videos, &characters, &idList);
         itemWidget->setEvent(evPointer);
-        itemWidget->represent();
 
         QListWidgetItem * item = new QListWidgetItem();
         ui->timeline_events->addItem(item);
         ui->timeline_events->setItemWidget(item, itemWidget);
+
+        auto timer = new QTimer();
+        timer->setSingleShot(true);
+        connect(timer, &QTimer::timeout, this, [itemWidget, timer]() {
+            itemWidget->represent();
+            timer->deleteLater();
+        });
+        timer->start(1);
+
         ui->statusbar->showMessage("Loading Timeline " + QString::number(i * 100 / timeline.events.count())  + "%", 500);
         qApp->processEvents();
     }
