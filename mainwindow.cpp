@@ -97,8 +97,17 @@ void MainWindow::loadConfig()
     if (!ui->videos->text().isEmpty())
         on_videos_load_clicked();
 
-    if (!ui->timeline->text().isEmpty())
-        on_timeline_load_clicked();
+    if (!ui->timeline->text().isEmpty()) {
+        auto timer = new QTimer();
+        timer->setSingleShot(true);
+        connect(timer, &QTimer::timeout, this, [this, timer]() {
+            firstLoad = true;
+            this->on_timeline_load_clicked();
+            timer->deleteLater();
+            firstLoad = false;
+        });
+        timer->start(1);
+    }
 
     firstLoad = false;
 }
@@ -192,6 +201,8 @@ void MainWindow::represent()
         QListWidgetItem * item = new QListWidgetItem();
         ui->timeline_events->addItem(item);
         ui->timeline_events->setItemWidget(item, itemWidget);
+        ui->statusbar->showMessage("Loading Timeline " + QString::number(i * 100 / timeline.events.count())  + "%", 500);
+        qApp->processEvents();
     }
 }
 
