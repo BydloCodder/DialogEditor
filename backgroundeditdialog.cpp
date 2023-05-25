@@ -2,6 +2,7 @@
 #include "ui_backgroundeditdialog.h"
 #include <QImage>
 #include <QPixmap>
+#include <QColorDialog>
 
 BackgroundEditDialog::BackgroundEditDialog(QWidget *parent) :
     QDialog(parent),
@@ -51,11 +52,6 @@ void BackgroundEditDialog::represent()
         ui->video_combobox->setEnabled(true);
     } else
         ui->video_combobox->setEnabled(false);
-    ui->fade_combobox->setChecked(e->background->fade > 0.0);
-    if (e->background->fade > 0.0) {
-        ui->fade->setEnabled(true);
-        ui->fade->setValue(e->background->fade);
-    }
     ui->clickable_checkbox->setCheckState(e->background->clickable == -1 ? Qt::Unchecked :
                                                                            e->background->clickable == 0 ? Qt::PartiallyChecked : Qt::Checked);
 
@@ -63,6 +59,54 @@ void BackgroundEditDialog::represent()
         QImage img((*backgrounds)[e->background->name]);
         ui->preview->setPixmap(QPixmap::fromImage(img.scaled(200, 200, Qt::KeepAspectRatio, Qt::SmoothTransformation)));
     }
+
+    if (e->background->transition) {
+        ui->transition_combobox->setChecked(true);
+
+        ui->swipe_groupbox->setChecked(e->background->swipe_mode_h || e->background->swipe_mode_v);
+        ui->swipe_h_checkbox->setChecked(e->background->swipe_mode_h);
+        ui->swipe_v_checkbox->setChecked(e->background->swipe_mode_v);
+        ui->swipe_h_speed->setValue(e->background->swipe_speed_h);
+        ui->swipe_v_speed->setValue(e->background->swipe_speed_v);
+        ui->swipe_h_min->setValue(e->background->swipe_min_h);
+        ui->swipe_h_max->setValue(e->background->swipe_max_h);
+        ui->swipe_v_min->setValue(e->background->swipe_min_v);
+        ui->swipe_v_max->setValue(e->background->swipe_max_v);
+        ui->swipe_h_shift->setValue(e->background->swipe_shift_h);
+        ui->swipe_v_shift->setValue(e->background->swipe_shift_v);
+
+        ui->scale_groupbox->setChecked(e->background->scale_mode);
+        ui->scale_speed->setValue(e->background->scale_speed);
+        ui->scale_min->setValue(e->background->scale_min);
+        ui->scale_max->setValue(e->background->scale_max);
+        ui->scale_shift->setValue(e->background->scale_shift);
+
+        ui->shake_groupbox->setChecked(e->background->shake_mode);
+        ui->shake_horizontal->setChecked(e->background->shake_h);
+        ui->shake_vertical->setChecked(e->background->shake_v);
+        ui->shake_speed->setValue(e->background->shake_speed);
+        ui->shake_height->setValue(e->background->shake_height);
+        ui->shake_time->setValue(e->background->shake_time);
+
+        ui->blend_checkbox->setChecked(e->background->blend_mode);
+        ui->blend_speed->setValue(e->background->blend_speed);
+
+        ui->fade_groupbox->setChecked(e->background->fade_to || e->background->fade_from);
+        ui->fade_from->setChecked(e->background->fade_from);
+        ui->fade_to->setChecked(e->background->fade_to);
+        ui->fade_speed->setValue(e->background->fade_speed);
+        ui->color->setText(e->background->fade_color);
+
+        ui->slide_groupbox->setChecked(e->background->slide_h || e->background->slide_v);
+        ui->slide_horizontal->setChecked(e->background->slide_h);
+        ui->slide_vertical->setChecked(e->background->slide_v);
+        ui->slide_reverse->setChecked(e->background->slide_reverse);
+        ui->slide_speed->setValue(e->background->slide_speed);
+
+    } else {
+        ui->transition_combobox->setChecked(false);
+    }
+
     ready = true;
 }
 
@@ -118,26 +162,6 @@ void BackgroundEditDialog::on_video_combobox_currentTextChanged(const QString &a
     }
 }
 
-void BackgroundEditDialog::on_fade_combobox_toggled(bool checked)
-{
-    if (ready) {
-        ui->fade->setEnabled(checked);
-        if (!checked)
-            e->background->fade = 0.0;
-        else
-            e->background->fade = ui->fade->value();
-    }
-}
-
-void BackgroundEditDialog::on_fade_valueChanged(double arg1)
-{
-    if (ready) {
-        if (ui->fade_combobox->isChecked()) {
-            e->background->fade = arg1;
-        }
-    }
-}
-
 void BackgroundEditDialog::on_clickable_checkbox_stateChanged(int arg1)
 {
     if (ready) {
@@ -155,26 +179,237 @@ void BackgroundEditDialog::on_background_box_toggled(bool arg1)
 
 
 
+void BackgroundEditDialog::on_transition_combobox_toggled(bool arg1)
+{
+    if (!ready) return;
+    e->background->transition = arg1;
+}
+
+void BackgroundEditDialog::on_swipe_h_checkbox_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->swipe_mode_h = checked;
+}
 
 
+void BackgroundEditDialog::on_swipe_v_checkbox_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->swipe_mode_v = checked;
+}
 
 
+void BackgroundEditDialog::on_swipe_h_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->swipe_speed_h = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_v_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->swipe_speed_v = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_h_min_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_min_h = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_v_min_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_min_v = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_h_max_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_max_h = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_v_max_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_max_v = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_h_shift_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_shift_h = arg1;
+}
 
 
+void BackgroundEditDialog::on_swipe_v_shift_valueChanged(int arg1)
+{
+    if (!ready) return;
+    e->background->swipe_shift_v = arg1;
+}
 
 
+void BackgroundEditDialog::on_scale_groupbox_toggled(bool arg1)
+{
+    if (!ready) return;
+    e->background->scale_mode = arg1;
+}
 
+
+void BackgroundEditDialog::on_scale_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->scale_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_scale_min_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->scale_min = arg1;
+}
+
+
+void BackgroundEditDialog::on_scale_max_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->scale_max = arg1;
+}
+
+
+void BackgroundEditDialog::on_scale_shift_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->scale_shift = arg1;
+}
+
+
+void BackgroundEditDialog::on_shake_groupbox_toggled(bool arg1)
+{
+    if (!ready) return;
+    e->background->shake_mode = arg1;
+}
+
+
+void BackgroundEditDialog::on_shake_horizontal_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->shake_h = checked;
+}
+
+
+void BackgroundEditDialog::on_shake_vertical_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->shake_v = checked;
+}
+
+
+void BackgroundEditDialog::on_shake_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->shake_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_shake_height_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->shake_height = arg1;
+}
+
+
+void BackgroundEditDialog::on_shake_time_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->shake_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_blend_checkbox_toggled(bool arg1)
+{
+    if (!ready) return;
+    e->background->blend_mode = arg1;
+}
+
+
+void BackgroundEditDialog::on_blend_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->blend_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_fade_to_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->fade_to = checked;
+}
+
+
+void BackgroundEditDialog::on_fade_from_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->fade_from = checked;
+}
+
+
+void BackgroundEditDialog::on_color_textChanged(const QString &arg1)
+{
+    if (!ready) return;
+    e->background->fade_color = arg1;
+}
+
+
+void BackgroundEditDialog::on_fade_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->fade_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_slide_horizontal_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->slide_h = checked;
+}
+
+
+void BackgroundEditDialog::on_slide_vertical_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->slide_v = checked;
+}
+
+
+void BackgroundEditDialog::on_slide_speed_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->slide_speed = arg1;
+}
+
+
+void BackgroundEditDialog::on_slide_reverse_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->slide_reverse = checked;
+}
+
+
+void BackgroundEditDialog::on_pick_button_clicked()
+{
+    auto result = QColorDialog::getColor(Qt::white, 0, "", QColorDialog::ShowAlphaChannel);
+    if (result.isValid()) {
+        QString argb = result.name(QColor::HexArgb);
+        QString clr = argb.first(1) + argb.mid(3) + argb.mid(1, 2);
+        ui->color->setText(clr);
+    }
+}
 
 

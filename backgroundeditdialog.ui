@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>415</width>
-    <height>253</height>
+    <width>994</width>
+    <height>363</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -23,20 +23,47 @@
       <bool>true</bool>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="fade">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="maximum">
-         <double>999.000000000000000</double>
-        </property>
-        <property name="singleStep">
-         <double>0.100000000000000</double>
+      <item row="0" column="1">
+       <widget class="QComboBox" name="image_combobox">
+        <property name="editable">
+         <bool>true</bool>
         </property>
        </widget>
       </item>
-      <item row="2" column="2">
+      <item row="1" column="0">
+       <widget class="QCheckBox" name="video_checkbox">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Video</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QCheckBox" name="imageCheckbox">
+        <property name="maximumSize">
+         <size>
+          <width>100</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Image</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QComboBox" name="video_combobox">
+        <property name="editable">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0">
        <widget class="QCheckBox" name="clickable_checkbox">
         <property name="maximumSize">
          <size>
@@ -55,60 +82,542 @@
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QCheckBox" name="video_checkbox">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
+      <item row="0" column="2" rowspan="5">
+       <widget class="QGroupBox" name="transition_combobox">
+        <property name="title">
+         <string>Transition</string>
         </property>
-        <property name="text">
-         <string>Video</string>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="0">
-       <widget class="QCheckBox" name="fade_combobox">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Fade</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QComboBox" name="video_combobox">
-        <property name="editable">
+        <property name="checkable">
          <bool>true</bool>
         </property>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <property name="leftMargin">
+          <number>4</number>
+         </property>
+         <property name="topMargin">
+          <number>4</number>
+         </property>
+         <property name="rightMargin">
+          <number>4</number>
+         </property>
+         <property name="bottomMargin">
+          <number>4</number>
+         </property>
+         <property name="spacing">
+          <number>4</number>
+         </property>
+         <item row="0" column="0" colspan="4">
+          <widget class="QGroupBox" name="swipe_groupbox">
+           <property name="title">
+            <string>Swipe</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_4">
+            <item row="0" column="6">
+             <widget class="QSpinBox" name="swipe_h_max">
+              <property name="minimum">
+               <number>-100000</number>
+              </property>
+              <property name="maximum">
+               <number>100000</number>
+              </property>
+              <property name="value">
+               <number>1920</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="5">
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Max</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="7">
+             <widget class="QLabel" name="label_7">
+              <property name="text">
+               <string>Shift</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="5">
+             <widget class="QLabel" name="label_3">
+              <property name="text">
+               <string>Max</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QDoubleSpinBox" name="swipe_v_speed">
+              <property name="minimum">
+               <double>-100000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QDoubleSpinBox" name="swipe_h_speed">
+              <property name="minimum">
+               <double>-100000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QCheckBox" name="swipe_v_checkbox">
+              <property name="text">
+               <string>Swipe Vertical</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="4">
+             <widget class="QSpinBox" name="swipe_h_min">
+              <property name="minimum">
+               <number>-100000</number>
+              </property>
+              <property name="maximum">
+               <number>100000</number>
+              </property>
+              <property name="value">
+               <number>-1920</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="6">
+             <widget class="QSpinBox" name="swipe_v_max">
+              <property name="minimum">
+               <number>-100000</number>
+              </property>
+              <property name="maximum">
+               <number>100000</number>
+              </property>
+              <property name="value">
+               <number>1080</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="4">
+             <widget class="QSpinBox" name="swipe_v_min">
+              <property name="minimum">
+               <number>-100000</number>
+              </property>
+              <property name="maximum">
+               <number>100000</number>
+              </property>
+              <property name="value">
+               <number>-1080</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLabel" name="label_2">
+              <property name="text">
+               <string>Min</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3">
+             <widget class="QLabel" name="label_5">
+              <property name="text">
+               <string>Min</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="swipe_h_checkbox">
+              <property name="text">
+               <string>Swipe Horizontal</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="8">
+             <widget class="QSpinBox" name="swipe_h_shift">
+              <property name="minimum">
+               <number>-10000</number>
+              </property>
+              <property name="maximum">
+               <number>10000</number>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="7">
+             <widget class="QLabel" name="label_8">
+              <property name="text">
+               <string>Shift</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="8">
+             <widget class="QSpinBox" name="swipe_v_shift">
+              <property name="minimum">
+               <number>-10000</number>
+              </property>
+              <property name="maximum">
+               <number>10000</number>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QLabel" name="label_17">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QGroupBox" name="blend_checkbox">
+           <property name="maximumSize">
+            <size>
+             <width>180</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Blend</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <property name="leftMargin">
+             <number>4</number>
+            </property>
+            <property name="topMargin">
+             <number>4</number>
+            </property>
+            <property name="rightMargin">
+             <number>4</number>
+            </property>
+            <property name="bottomMargin">
+             <number>4</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="blend_speed">
+              <property name="maximum">
+               <double>10000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="2" column="2">
+          <widget class="QGroupBox" name="fade_groupbox">
+           <property name="maximumSize">
+            <size>
+             <width>180</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Fade Color</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_8">
+            <item row="1" column="0">
+             <widget class="QLineEdit" name="color"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="fade_to">
+              <property name="text">
+               <string>Fade To</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="fade_from">
+              <property name="text">
+               <string>Fade from</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="pick_button">
+              <property name="text">
+               <string>Pick</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_18">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="2">
+             <widget class="QDoubleSpinBox" name="fade_speed">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="1" rowspan="2">
+          <widget class="QGroupBox" name="shake_groupbox">
+           <property name="title">
+            <string>Shake</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_6">
+            <item row="5" column="1">
+             <widget class="QDoubleSpinBox" name="shake_time">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>20.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="5" column="0">
+             <widget class="QLabel" name="label_14">
+              <property name="text">
+               <string>Time</string>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_13">
+              <property name="text">
+               <string>Height</string>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="shake_speed">
+              <property name="maximum">
+               <double>10000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="1">
+             <widget class="QDoubleSpinBox" name="shake_height">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>20.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="1">
+             <widget class="QCheckBox" name="shake_vertical">
+              <property name="text">
+               <string>Vertical</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QCheckBox" name="shake_horizontal">
+              <property name="text">
+               <string>Horizontal</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="0" rowspan="2">
+          <widget class="QGroupBox" name="scale_groupbox">
+           <property name="title">
+            <string>Scale</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_5">
+            <item row="0" column="0">
+             <widget class="QLabel" name="label">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="scale_speed">
+              <property name="minimum">
+               <double>-100000.000000000000000</double>
+              </property>
+              <property name="maximum">
+               <double>100000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_10">
+              <property name="text">
+               <string>Min</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_11">
+              <property name="text">
+               <string>Max</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0">
+             <widget class="QLabel" name="label_9">
+              <property name="text">
+               <string>Shift</string>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="scale_min"/>
+            </item>
+            <item row="2" column="1">
+             <widget class="QDoubleSpinBox" name="scale_max"/>
+            </item>
+            <item row="3" column="1">
+             <widget class="QDoubleSpinBox" name="scale_shift"/>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="3" rowspan="2">
+          <widget class="QGroupBox" name="slide_groupbox">
+           <property name="title">
+            <string>Slide</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="slide_horizontal">
+              <property name="text">
+               <string>Horizontal</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="slide_speed">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QCheckBox" name="slide_vertical">
+              <property name="text">
+               <string>Vertical</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="slide_reverse">
+              <property name="text">
+               <string>Reverse</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
-      <item row="0" column="1">
-       <widget class="QComboBox" name="image_combobox">
-        <property name="editable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QCheckBox" name="imageCheckbox">
-        <property name="maximumSize">
-         <size>
-          <width>100</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="text">
-         <string>Image</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="4">
+      <item row="3" column="0" colspan="2">
        <widget class="QLabel" name="preview">
         <property name="maximumSize">
          <size>

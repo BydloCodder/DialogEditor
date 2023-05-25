@@ -35,6 +35,25 @@ struct Event {
 
         QJsonObject toJson() const;
 
+        bool transition = false;
+        bool swipe_mode_h = false, swipe_mode_v = false;
+        double swipe_speed_h = 0.0, swipe_speed_v = 0.0;
+        double swipe_min_h = -1920.0, swipe_max_h = 1920.0;
+        double swipe_min_v = -1080.0, swipe_max_v = 1080.0;
+        double swipe_shift_h = 0.0, swipe_shift_v = 0.0;
+        bool scale_mode = false;
+        double scale_speed = 0.0, scale_min = 0.0, scale_max = 1.0, scale_shift = 1.0;
+        bool shake_mode = false, shake_h = false, shake_v = false;
+        double shake_speed = 0.0, shake_height = 20.0, shake_time = 1.0;
+        bool blend_mode = false;
+        double blend_speed = 1.0;
+        QString fade_color;
+        bool fade_to = false, fade_from = false;
+        double fade_speed = 0.0;
+
+        bool slide_h = false, slide_v = false, slide_reverse = false;
+        double slide_speed = 0.0;
+
     };
     Background *background = 0;
 

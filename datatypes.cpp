@@ -15,7 +15,48 @@ Event::Background::Background(QJsonObject obj)
         fade = obj["fade"].toDouble();
     if (obj.contains("clickable"))
         clickable = obj["clickable"].toBool() ? 1 : 0;
+    if (obj.contains("transition")) {
+        auto t = obj["transition"].toObject();
+        transition = true;
 
+        swipe_mode_h = t["swipe_mode_h"].toBool();
+        swipe_mode_v = t["swipe_mode_v"].toBool();
+        swipe_speed_h = t["swipe_speed_h"].toDouble();
+        swipe_speed_v = t["swipe_speed_v"].toDouble();
+        swipe_min_h = t["swipe_min_h"].toDouble();
+        swipe_max_h = t["swipe_max_h"].toDouble();
+        swipe_min_v = t["swipe_min_v"].toDouble();
+        swipe_max_v = t["swipe_max_v"].toDouble();
+        swipe_shift_h = t["swipe_shift_h"].toDouble();
+        swipe_shift_v = t["swipe_shift_v"].toDouble();
+
+        scale_mode = t["scale_mode"].toBool();
+        scale_speed = t["scale_speed"].toDouble();
+        scale_min = t["scale_min"].toDouble();
+        scale_max = t["scale_max"].toDouble();
+        scale_shift = t["scale_shift"].toDouble();
+
+        shake_mode = t["shake_mode"].toBool();
+        shake_h  = t["shake_h"].toBool();
+        shake_v = t["shake_v"].toBool();
+        shake_speed = t["shake_speed"].toDouble();
+        shake_height = t["shake_height"].toDouble();
+        shake_time = t["shake_time"].toDouble();
+
+        blend_mode = t["blend_mode"].toBool();
+        blend_speed = t["blend_speed"].toDouble();
+
+        fade_color = t["fade_color"].toString();
+        fade_to = t["fade_to"].toBool();
+        fade_from = t["fade_from"].toBool();
+        fade_speed = t["fade_speed"].toDouble();
+
+        slide_h = t["slide_h"].toBool();
+        slide_v = t["slide_v"].toBool();
+        slide_reverse = t["slide_reverse"].toBool();
+        slide_speed = t["slide_speed"].toDouble();
+
+    }
 }
 
 QJsonObject Event::Background::toJson() const
@@ -29,6 +70,47 @@ QJsonObject Event::Background::toJson() const
         result["fade"] = fade;
     if (clickable >= 0)
         result["clickable"] = clickable == 0 ? false : true;
+
+    if (transition) {
+        QJsonObject transition;
+        transition["swipe_mode_h"] = swipe_mode_h;
+        transition["swipe_mode_v"] = swipe_mode_v;
+        transition["swipe_speed_h"] = swipe_speed_h;
+        transition["swipe_speed_v"] = swipe_speed_v;
+        transition["swipe_min_h"] = swipe_min_h;
+        transition["swipe_max_h"] = swipe_max_h;
+        transition["swipe_min_v"] = swipe_min_v;
+        transition["swipe_max_v"] = swipe_max_v;
+        transition["swipe_shift_h"] = swipe_shift_h;
+        transition["swipe_shift_v"] = swipe_shift_v;
+
+        transition["scale_mode"] = scale_mode;
+        transition["scale_speed"] = scale_speed;
+        transition["scale_min"] = scale_min;
+        transition["scale_max"] = scale_max;
+        transition["scale_shift"] = scale_shift;
+
+        transition["shake_mode"] = shake_mode;
+        transition["shake_h"] = shake_h;
+        transition["shake_v"] = shake_v;
+        transition["shake_speed"] = shake_speed;
+        transition["shake_height"] = shake_height;
+        transition["shake_time"] = shake_time;
+
+        transition["blend_mode"] = blend_mode;
+        transition["blend_speed"] = blend_speed;
+
+        transition["fade_color"] = fade_color;
+        transition["fade_to"] = fade_to;
+        transition["fade_from"] = fade_from;
+        transition["fade_speed"] = fade_speed;
+
+        transition["slide_h"] = slide_h;
+        transition["slide_v"] = slide_v;
+        transition["slide_reverse"] = slide_reverse;
+        transition["slide_speed"] = slide_speed;
+        result["transition"] = transition;
+    }
     return result;
 }
 
