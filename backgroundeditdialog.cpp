@@ -328,7 +328,7 @@ void BackgroundEditDialog::on_shake_height_valueChanged(double arg1)
 void BackgroundEditDialog::on_shake_time_valueChanged(double arg1)
 {
     if (!ready) return;
-    e->background->shake_speed = arg1;
+    e->background->shake_time = arg1;
 }
 
 
