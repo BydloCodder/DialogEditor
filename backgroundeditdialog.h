@@ -100,6 +100,10 @@ private slots:
 
     void on_pick_button_clicked();
 
+    void on_slide_groupbox_toggled(bool arg1);
+
+    void on_fade_groupbox_toggled(bool arg1);
+
 private:
     Ui::BackgroundEditDialog *ui;
 

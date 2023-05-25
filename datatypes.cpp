@@ -56,6 +56,7 @@ Event::Background::Background(QJsonObject obj)
         slide_reverse = t["slide_reverse"].toBool();
         slide_speed = t["slide_speed"].toDouble();
 
+        blend = blend_mode || slide_h || slide_v;
     }
 }
 
@@ -109,6 +110,7 @@ QJsonObject Event::Background::toJson() const
         transition["slide_v"] = slide_v;
         transition["slide_reverse"] = slide_reverse;
         transition["slide_speed"] = slide_speed;
+        transition["blend"] = blend_mode || slide_h || slide_v;
         result["transition"] = transition;
     }
     return result;

@@ -10,6 +10,7 @@
 #include <QListWidgetItem>
 #include <QVector>
 #include <QScrollBar>
+#include <QSysInfo>
 #include "eventlistitem.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -76,7 +77,8 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     });
-    ui->timeline_events->verticalScrollBar()->setSingleStep(1);
+    if (QSysInfo::productType() != "macos")
+        ui->timeline_events->verticalScrollBar()->setSingleStep(1);
 }
 
 void MainWindow::loadConfig()

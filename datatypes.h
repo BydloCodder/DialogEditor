@@ -36,6 +36,7 @@ struct Event {
         QJsonObject toJson() const;
 
         bool transition = false;
+        bool blend = false;
         bool swipe_mode_h = false, swipe_mode_v = false;
         double swipe_speed_h = 0.0, swipe_speed_v = 0.0;
         double swipe_min_h = -1920.0, swipe_max_h = 1920.0;

@@ -413,3 +413,23 @@ void BackgroundEditDialog::on_pick_button_clicked()
 }
 
 
+
+void BackgroundEditDialog::on_slide_groupbox_toggled(bool arg1)
+{
+    if (!ready) return;
+    if (!arg1) {
+        ui->slide_horizontal->setChecked(false);
+        ui->slide_vertical->setChecked(false);
+    }
+}
+
+
+void BackgroundEditDialog::on_fade_groupbox_toggled(bool arg1)
+{
+    if (!ready) return;
+    if (!arg1) {
+        ui->fade_from->setChecked(false);
+        ui->fade_to->setChecked(false);
+    }
+}
+
