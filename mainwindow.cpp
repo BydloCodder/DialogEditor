@@ -76,6 +76,7 @@ MainWindow::MainWindow(QWidget *parent)
             }
         }
     });
+    ui->timeline_events->verticalScrollBar()->setSingleStep(1);
 }
 
 void MainWindow::loadConfig()
