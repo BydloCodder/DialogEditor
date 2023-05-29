@@ -68,20 +68,19 @@ void CharactersView::on_pushButton_2_clicked()
 
 void CharactersView::on_pushButton_clicked()
 {
-    auto fileList = QFileDialog::getOpenFileNames();
-    if (!fileList.empty()) {
-        foreach (auto fn, fileList) {
-            QFileInfo info(fn);
-            QString name = info.baseName();
-            if (dict->characters.contains(name))
-                name = name + QString::number(QDateTime::currentMSecsSinceEpoch());
-            Characters::Character c;
-            c.name = info.baseName();
-            c.portrait = fn;
-            dict->characters[name] = c;
-        }
-        mapDict();
-    }
+    auto fn = QFileDialog::getOpenFileName();
+    if (fn.isEmpty())
+        fn = "new_character";
+
+    QFileInfo info(fn);
+    QString name = info.exists() ? info.baseName() : fn;
+    if (dict->characters.contains(name))
+        name = name + QString::number(QDateTime::currentMSecsSinceEpoch());
+    Characters::Character c;
+    c.name = info.baseName();
+    c.portrait = fn;
+    dict->characters[name] = c;
+    mapDict();
 }
 
 void CharactersView::on_persons_list_currentTextChanged(const QString &currentText)
