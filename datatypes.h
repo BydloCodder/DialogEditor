@@ -55,6 +55,13 @@ struct Event {
         bool slide_h = false, slide_v = false, slide_reverse = false;
         double slide_speed = 0.0;
 
+        float curtain_speed_h = 0.0;
+        float curtain_speed_v = 0.0;
+        bool curtain_h = false;
+        bool curtain_v = false;
+        bool curtain_reverse_h = false;
+        bool curtain_reverse_v = false;
+
     };
     Background *background = 0;
 

@@ -103,6 +103,13 @@ void BackgroundEditDialog::represent()
         ui->slide_reverse->setChecked(e->background->slide_reverse);
         ui->slide_speed->setValue(e->background->slide_speed);
 
+        ui->curtain_h->setChecked(e->background->curtain_h);
+        ui->curtain_v->setChecked(e->background->curtain_v);
+        ui->curtain_reverse_h->setChecked(e->background->curtain_reverse_h);
+        ui->curtain_reverse_v->setChecked(e->background->curtain_reverse_v);
+        ui->curtain_speed_h->setValue(e->background->curtain_speed_h);
+        ui->curtain_speed_v->setValue(e->background->curtain_speed_v);
+
     } else {
         ui->transition_combobox->setChecked(false);
     }
@@ -431,5 +438,47 @@ void BackgroundEditDialog::on_fade_groupbox_toggled(bool arg1)
         ui->fade_from->setChecked(false);
         ui->fade_to->setChecked(false);
     }
+}
+
+
+void BackgroundEditDialog::on_curtain_h_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->curtain_h = checked;
+}
+
+
+void BackgroundEditDialog::on_curtain_v_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->curtain_v = checked;
+}
+
+
+void BackgroundEditDialog::on_curtain_reverse_h_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->curtain_reverse_h = checked;
+}
+
+
+void BackgroundEditDialog::on_curtain_reverse_v_toggled(bool checked)
+{
+    if (!ready) return;
+    e->background->curtain_reverse_v = checked;
+}
+
+
+void BackgroundEditDialog::on_curtain_speed_h_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->curtain_speed_h = arg1;
+}
+
+
+void BackgroundEditDialog::on_curtain_speed_v_valueChanged(double arg1)
+{
+    if (!ready) return;
+    e->background->curtain_speed_v = arg1;
 }
 

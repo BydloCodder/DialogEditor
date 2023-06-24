@@ -56,6 +56,13 @@ Event::Background::Background(QJsonObject obj)
         slide_reverse = t["slide_reverse"].toBool();
         slide_speed = t["slide_speed"].toDouble();
 
+        curtain_speed_h = t["curtain_speed_h"].toDouble();
+        curtain_speed_v = t["curtain_speed_v"].toDouble();
+        curtain_h = t["curtain_h"].toBool();
+        curtain_v = t["curtain_v"].toBool();
+        curtain_reverse_h = t["curtain_reverse_h"].toBool();
+        curtain_reverse_v = t["curtain_reverse_v"].toBool();
+
         blend = blend_mode || slide_h || slide_v;
     }
 }
@@ -111,6 +118,14 @@ QJsonObject Event::Background::toJson() const
         transition["slide_reverse"] = slide_reverse;
         transition["slide_speed"] = slide_speed;
         transition["blend"] = blend_mode || slide_h || slide_v;
+
+        transition["curtain_h"] = curtain_h;
+        transition["curtain_v"] = curtain_v;
+        transition["curtain_reverse_h"] = curtain_reverse_h;
+        transition["curtain_reverse_v"] = curtain_reverse_v;
+        transition["curtain_speed_h"] = curtain_speed_h;
+        transition["curtain_speed_v"] = curtain_speed_v;
+
         result["transition"] = transition;
     }
     return result;
