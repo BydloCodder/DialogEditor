@@ -104,6 +104,18 @@ private slots:
 
     void on_fade_groupbox_toggled(bool arg1);
 
+    void on_curtain_h_toggled(bool checked);
+
+    void on_curtain_v_toggled(bool checked);
+
+    void on_curtain_reverse_h_toggled(bool checked);
+
+    void on_curtain_reverse_v_toggled(bool checked);
+
+    void on_curtain_speed_h_valueChanged(double arg1);
+
+    void on_curtain_speed_v_valueChanged(double arg1);
+
 private:
     Ui::BackgroundEditDialog *ui;
 
