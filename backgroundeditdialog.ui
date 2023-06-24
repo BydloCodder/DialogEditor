@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>994</width>
-    <height>368</height>
+    <width>1142</width>
+    <height>375</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -100,6 +100,103 @@
          <property name="spacing">
           <number>4</number>
          </property>
+         <item row="1" column="3" rowspan="2">
+          <widget class="QGroupBox" name="slide_groupbox">
+           <property name="title">
+            <string>Slide</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_9">
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="slide_horizontal">
+              <property name="text">
+               <string>Horizontal</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QDoubleSpinBox" name="slide_speed">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QCheckBox" name="slide_vertical">
+              <property name="text">
+               <string>Vertical</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QLabel" name="label_16">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="slide_reverse">
+              <property name="text">
+               <string>Reverse</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="1" column="2">
+          <widget class="QGroupBox" name="blend_checkbox">
+           <property name="maximumSize">
+            <size>
+             <width>180</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="title">
+            <string>Blend</string>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+           <property name="checked">
+            <bool>false</bool>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_7">
+            <property name="leftMargin">
+             <number>4</number>
+            </property>
+            <property name="topMargin">
+             <number>4</number>
+            </property>
+            <property name="rightMargin">
+             <number>4</number>
+            </property>
+            <property name="bottomMargin">
+             <number>4</number>
+            </property>
+            <item row="0" column="0">
+             <widget class="QLabel" name="label_15">
+              <property name="text">
+               <string>Speed</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="1">
+             <widget class="QDoubleSpinBox" name="blend_speed">
+              <property name="maximum">
+               <double>10000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
          <item row="0" column="0" colspan="4">
           <widget class="QGroupBox" name="swipe_groupbox">
            <property name="title">
@@ -301,115 +398,6 @@
            </layout>
           </widget>
          </item>
-         <item row="1" column="2">
-          <widget class="QGroupBox" name="blend_checkbox">
-           <property name="maximumSize">
-            <size>
-             <width>180</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Blend</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_7">
-            <property name="leftMargin">
-             <number>4</number>
-            </property>
-            <property name="topMargin">
-             <number>4</number>
-            </property>
-            <property name="rightMargin">
-             <number>4</number>
-            </property>
-            <property name="bottomMargin">
-             <number>4</number>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel" name="label_15">
-              <property name="text">
-               <string>Speed</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QDoubleSpinBox" name="blend_speed">
-              <property name="maximum">
-               <double>10000.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
-         <item row="2" column="2">
-          <widget class="QGroupBox" name="fade_groupbox">
-           <property name="maximumSize">
-            <size>
-             <width>180</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="title">
-            <string>Fade Color</string>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="checked">
-            <bool>false</bool>
-           </property>
-           <layout class="QGridLayout" name="gridLayout_8">
-            <item row="1" column="0">
-             <widget class="QLineEdit" name="color"/>
-            </item>
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="fade_to">
-              <property name="text">
-               <string>Fade To</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="2">
-             <widget class="QCheckBox" name="fade_from">
-              <property name="text">
-               <string>Fade from</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <widget class="QPushButton" name="pick_button">
-              <property name="focusPolicy">
-               <enum>Qt::NoFocus</enum>
-              </property>
-              <property name="text">
-               <string>Pick</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="0">
-             <widget class="QLabel" name="label_18">
-              <property name="text">
-               <string>Speed</string>
-              </property>
-             </widget>
-            </item>
-            <item row="2" column="2">
-             <widget class="QDoubleSpinBox" name="fade_speed">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-           </layout>
-          </widget>
-         </item>
          <item row="1" column="1" rowspan="2">
           <widget class="QGroupBox" name="shake_groupbox">
            <property name="title">
@@ -561,10 +549,16 @@
            </layout>
           </widget>
          </item>
-         <item row="1" column="3" rowspan="2">
-          <widget class="QGroupBox" name="slide_groupbox">
+         <item row="2" column="2">
+          <widget class="QGroupBox" name="fade_groupbox">
+           <property name="maximumSize">
+            <size>
+             <width>180</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="title">
-            <string>Slide</string>
+            <string>Fade Color</string>
            </property>
            <property name="checkable">
             <bool>true</bool>
@@ -572,39 +566,110 @@
            <property name="checked">
             <bool>false</bool>
            </property>
-           <layout class="QGridLayout" name="gridLayout_9">
-            <item row="0" column="0">
-             <widget class="QCheckBox" name="slide_horizontal">
-              <property name="text">
-               <string>Horizontal</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QDoubleSpinBox" name="slide_speed">
-              <property name="maximum">
-               <double>1000.000000000000000</double>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="1">
-             <widget class="QCheckBox" name="slide_vertical">
-              <property name="text">
-               <string>Vertical</string>
-              </property>
-             </widget>
-            </item>
+           <layout class="QGridLayout" name="gridLayout_8">
             <item row="1" column="0">
-             <widget class="QLabel" name="label_16">
+             <widget class="QLineEdit" name="color"/>
+            </item>
+            <item row="0" column="0">
+             <widget class="QCheckBox" name="fade_to">
+              <property name="text">
+               <string>Fade To</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="2">
+             <widget class="QCheckBox" name="fade_from">
+              <property name="text">
+               <string>Fade from</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="2">
+             <widget class="QPushButton" name="pick_button">
+              <property name="focusPolicy">
+               <enum>Qt::NoFocus</enum>
+              </property>
+              <property name="text">
+               <string>Pick</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0">
+             <widget class="QLabel" name="label_18">
               <property name="text">
                <string>Speed</string>
               </property>
              </widget>
             </item>
-            <item row="2" column="0" colspan="2">
-             <widget class="QCheckBox" name="slide_reverse">
+            <item row="2" column="2">
+             <widget class="QDoubleSpinBox" name="fade_speed">
+              <property name="maximum">
+               <double>1000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </widget>
+         </item>
+         <item row="0" column="4" rowspan="3">
+          <widget class="QGroupBox" name="groupBox">
+           <property name="title">
+            <string>Curtain</string>
+           </property>
+           <layout class="QGridLayout" name="gridLayout_10">
+            <item row="4" column="1">
+             <widget class="QDoubleSpinBox" name="curtain_speed_h">
+              <property name="singleStep">
+               <double>0.010000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="3" column="0" colspan="2">
+             <widget class="QCheckBox" name="curtain_reverse_v">
               <property name="text">
-               <string>Reverse</string>
+               <string>Reverse V</string>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0" colspan="2">
+             <widget class="QCheckBox" name="curtain_h">
+              <property name="text">
+               <string>Horizontal</string>
+              </property>
+             </widget>
+            </item>
+            <item row="2" column="0" colspan="2">
+             <widget class="QCheckBox" name="curtain_reverse_h">
+              <property name="text">
+               <string>Reverse H</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0" colspan="2">
+             <widget class="QCheckBox" name="curtain_v">
+              <property name="text">
+               <string>Vertical</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="1">
+             <widget class="QDoubleSpinBox" name="curtain_speed_v">
+              <property name="singleStep">
+               <double>0.010000000000000</double>
+              </property>
+             </widget>
+            </item>
+            <item row="4" column="0">
+             <widget class="QLabel" name="label_19">
+              <property name="text">
+               <string>SpeedH</string>
+              </property>
+             </widget>
+            </item>
+            <item row="6" column="0">
+             <widget class="QLabel" name="label_20">
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;SpeedV&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
               </property>
              </widget>
             </item>
